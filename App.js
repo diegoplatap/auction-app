@@ -1,27 +1,21 @@
-import { NavigationContainer } from "@react-navigation/stack";
-import { createStackNavigator } from "@react-navigation/stack";
-import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import Footer from "./components/Footer";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <Text>Hello Test!</Text>
-        <StatusBar stlye="auto" />
-      </View>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Footer"
+          component={Footer}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
