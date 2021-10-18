@@ -1,26 +1,26 @@
-import React from "react";
-import { Text, StyleSheet, View, TouchableOpacity, Button } from "react-native";
+import React from 'react'
+import { Text, StyleSheet, View, TouchableOpacity, Button } from 'react-native'
 
 const Explore = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>EXPLORE</Text>
     </View>
-  );
-};
+  )
+}
 
-export default Explore;
+export default Explore
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "whitesmoke",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 600,
+    backgroundColor: '#f4f6f8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
   },
   text: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     fontSize: 30,
   },
-});
+})
