@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 const Bookmarks = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>BOOKMARKS</Text>
+      <Text style={styles.text}>Bookmark</Text>
     </View>
   )
 }
@@ -12,14 +12,8 @@ const Bookmarks = () => {
 export default Bookmarks
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f4f6f8',
-    justifyContent: 'center',
+    flex: 1,
     alignItems: 'center',
-    height: '100%',
-  },
-  text: {
     justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: 30,
   },
 })

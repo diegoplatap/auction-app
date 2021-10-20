@@ -1,10 +1,19 @@
 import React from 'react'
-import { Text, StyleSheet, View, TouchableOpacity, Button } from 'react-native'
+import { Text, StyleSheet, View, SafeAreaView, Button } from 'react-native'
+import CustomHeader from '../components/CustomHeader'
 
-const Explore = () => {
+const Explore = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>EXPLORE</Text>
+      <CustomHeader navigation={navigation} title={'Explore'} />
+      <View style={styles.content}>
+        <Text>This is the home screen</Text>
+        <Button
+          title="Go to product page"
+          onPress={() => navigation.navigate('Product')}
+          overlayContainerStyle={{ backgroundColor: 'white' }}
+        />
+      </View>
     </View>
   )
 }
@@ -13,14 +22,12 @@ export default Explore
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f4f6f8',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
+    backgroundColor: 'white',
+    flex: 1,
   },
-  text: {
+  content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    fontSize: 30,
   },
 })
