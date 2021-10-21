@@ -3,8 +3,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-const CustomHeader = ({ navigation, title }) => {
-  const openProfile = () => navigation.navigate('Sign Up')
+const CustomHeader = ({ navigation, title, screen }) => {
+  const openProfile = () => navigation.navigate('Login')
   const closeSignup = () => navigation.navigate('Landing')
 
   return (
@@ -15,7 +15,7 @@ const CustomHeader = ({ navigation, title }) => {
             <MaterialCommunityIcons
               onPress={openProfile}
               name="account-circle"
-              size={36}
+              size={38}
               color="#A3B1B8"
             />
           ) : (

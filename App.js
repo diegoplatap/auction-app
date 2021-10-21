@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react'
 import BottomTabNavigator from './navigation/TabNavigator'
 import { createStackNavigator } from '@react-navigation/stack'
 import OnBoarding from './screens/OnBoarding'
-import SignUp from './screens/SignUp'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import Explore from './screens/Explore'
-import { ExploreStackNavigator } from './navigation/StackNavigator'
+import Login from './screens/Login'
+import Signup from './screens/SignUp'
 
 const Stack = createStackNavigator()
 
@@ -15,9 +14,9 @@ export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched2').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched6').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched2', 'true')
+        AsyncStorage.setItem('alreadyLaunched6', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
@@ -32,7 +31,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Onboarding" options={{ headerShown: false }} component={OnBoarding} />
-          <Stack.Screen name="Sign Up" options={{ headerShown: false }} component={SignUp} />
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+          <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
           <Stack.Screen
             name="Landing"
             options={{ headerShown: false }}
@@ -50,6 +50,8 @@ export default function App() {
             options={{ headerShown: false }}
             component={BottomTabNavigator}
           />
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+          <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
         </Stack.Navigator>
       </NavigationContainer>
     )

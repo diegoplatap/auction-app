@@ -8,8 +8,8 @@ const OnBoarding = ({ navigation }) => {
   return (
     <Onboarding
       // DoneButtonComponent={Done}
-      onSkip={() => navigation.replace('Sign Up')}
-      onDone={() => navigation.replace('Sign Up')}
+      onSkip={() => navigation.replace('Login')}
+      onDone={() => navigation.navigate('Login')}
       pages={[
         {
           backgroundColor: '#fff',
