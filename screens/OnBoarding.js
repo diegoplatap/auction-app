@@ -1,32 +1,15 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import Onboarding from 'react-native-onboarding-swiper'
 import LottieView from 'lottie-react-native'
 
 const OnBoarding = ({ navigation }) => {
-  const Skip = ({ ...props }) => (
-    <TouchableOpacity stlye={{ marginHorizontal: 8 }} {...props}>
-      <Text stlye={{ fontSize: 16 }}>Skip</Text>
-    </TouchableOpacity>
-  )
-  const Next = ({ ...props }) => (
-    <TouchableOpacity stlye={{ marginHorizontal: 8 }} {...props}>
-      <Text stlye={{ fontSize: 16 }}>Next</Text>
-    </TouchableOpacity>
-  )
-
-  const Done = ({ ...props }) => (
-    <TouchableOpacity stlye={{ marginHorizontal: 10 }} {...props}>
-      <Text stlye={{ fontSize: 16 }}>Done</Text>
-    </TouchableOpacity>
-  )
+  // const Done = ({ ...props }) => <Text stlye={{ marginRight: 16, color: 'red' }}>Done</Text>
   return (
     <Onboarding
-      SkipButtonComponent={Skip}
-      NextButtonComponent={Next}
-      DoneButtonComponent={Done}
-      onSkip={() => navigation.replace('Login')}
-      onDone={() => navigation.navigate('Login')}
+      // DoneButtonComponent={Done}
+      onSkip={() => navigation.replace('Sign Up')}
+      onDone={() => navigation.replace('Sign Up')}
       pages={[
         {
           backgroundColor: '#fff',
@@ -42,7 +25,7 @@ const OnBoarding = ({ navigation }) => {
             />
           ),
           title: 'Welcome to xxx',
-          subtitle: 'Done with React Native Onboarding Swiper',
+          subtitle: 'Done with React Native Onboarding Swiper!',
         },
         {
           backgroundColor: '#fff',
@@ -58,7 +41,7 @@ const OnBoarding = ({ navigation }) => {
             />
           ),
           title: 'Onboarding 2',
-          subtitle: 'Done with React Native Onboarding Swiper1',
+          subtitle: 'Done with React Native Onboarding Swiper12',
         },
       ]}
     />
@@ -72,5 +55,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  text: {
+    marginRight: 10,
+    fontSize: 16,
   },
 })

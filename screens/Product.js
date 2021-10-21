@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const Product = () => {
+const Product = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Product</Text>

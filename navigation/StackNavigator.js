@@ -1,70 +1,54 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-
 import Explore from '../screens/Explore'
 import Product from '../screens/Product'
 import AddProduct from '../screens/AddProduct'
 import Bookmarks from '../screens/Bookmarks'
 import Settings from '../screens/Settings'
-import { FontAwesome5 } from '@expo/vector-icons'
-import SignUp from '../screens/SignUp'
-import OnBoarding from '../screens/OnBoarding'
 
 const Stack = createStackNavigator()
 
 const screenOptionStyle = {
+  headerShown: false,
   headerTitleAlign: 'center',
   headerStyle: {
-    backgroundColor: 'whitesmoke',
+    backgroundColor: 'white',
   },
 }
 
-const MainStackNavigator = ({ navigation }) => {
+const ExploreStackNavigator = ({ navigation }) => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle} initialRouteName={'Onboarding'}>
-      <Stack.Screen
-        name="Onboarding"
-        component={OnBoarding}
-        options={{
-          headerShown: false,
-          tabBarVisible: false,
-        }}
-      />
-      <Stack.Screen name="Home" component={Explore} options={{ headerShown: false }} />
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name="Home" component={Explore} />
       <Stack.Screen name="Product" component={Product} />
-      <Stack.Screen
-        name="Sign up"
-        component={SignUp}
-        options={{ headerShown: false, presentation: 'modal' }}
-      />
     </Stack.Navigator>
   )
 }
 
-const AddProductsStackNavigator = () => {
+const AddProductsStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Add product" component={AddProduct} />
     </Stack.Navigator>
   )
 }
-const BookmarksStackNavigator = () => {
+const BookmarksStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Bookmarks" component={Bookmarks} />
+      <Stack.Screen name="BookmarksStack" component={Bookmarks} />
     </Stack.Navigator>
   )
 }
-const SettingsStackNavigator = () => {
+const SettingsStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Settings" component={Settings} />
+      <Stack.Screen name="SettingsStack" component={Settings} />
     </Stack.Navigator>
   )
 }
 
 export {
-  MainStackNavigator,
+  ExploreStackNavigator,
   AddProductsStackNavigator,
   BookmarksStackNavigator,
   SettingsStackNavigator,

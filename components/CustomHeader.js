@@ -4,14 +4,14 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const CustomHeader = ({ navigation, title }) => {
-  const openProfile = () => navigation.navigate('Sign up')
-  const closeSignup = () => navigation.navigate('Home')
+  const openProfile = () => navigation.navigate('Sign Up')
+  const closeSignup = () => navigation.navigate('Landing')
 
   return (
     <View style={styles.container}>
       <View style={styles.center}>
         <View style={{ marginLeft: 15 }}>
-          {title === 'Explore' ? (
+          {title === 'Explore' || title === 'Add a product!' ? (
             <MaterialCommunityIcons
               onPress={openProfile}
               name="account-circle"
@@ -47,11 +47,10 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flexDirection: 'row',
-    marginTop: 20,
-    height: 60,
+    marginTop: 20, // esta propiedad la utilizo para que se vea bien en el emulador
+    height: 57,
     borderBottomColor: '#A3B1B8',
     borderBottomWidth: 0.5,
-    overflow: 'hidden',
   },
   center: {
     flex: 1,

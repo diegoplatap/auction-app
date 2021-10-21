@@ -2,14 +2,13 @@ import React, { useRef } from 'react'
 import {
   AddProductsStackNavigator,
   BookmarksStackNavigator,
-  MainStackNavigator,
+  ExploreStackNavigator,
   SettingsStackNavigator,
 } from './StackNavigator'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import iconsName from '../utils/icons'
-import OnBoarding from '../screens/OnBoarding'
 
 const Tab = createBottomTabNavigator()
 
@@ -20,7 +19,7 @@ function getWidth() {
   return width / 4
 }
 
-const BottomTabNavigator = () => {
+const BottomTabNavigator = ({ navigate }) => {
   const tabOffSetValue = useRef(new Animated.Value(0)).current
   return (
     <>
@@ -58,7 +57,7 @@ const BottomTabNavigator = () => {
       >
         <Tab.Screen
           name={'Explore'}
-          component={MainStackNavigator}
+          component={ExploreStackNavigator}
           listeners={({ navigation, route }) => ({
             tabPress: (e) => {
               Animated.spring(tabOffSetValue, {
