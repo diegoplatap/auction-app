@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, StyleSheet, View, FlatList, Button } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import ProductCard from '../components/Products/ProductCards'
 import SearchBar from '../components/Search/SearchBar'
+import { auth, db } from '../config/firebase'
 
 const Explore = ({ navigation }) => {
   const [products, setProducts] = useState([
@@ -11,6 +12,11 @@ const Explore = ({ navigation }) => {
     { id: '3', name: 'Guitarra Azul' },
     { id: '4', name: 'Guitarra Amarilla' },
   ])
+
+  useEffect(() => {
+    navigation.navigate('Landing')
+  }, [])
+
   return (
     <View style={styles.container}>
       <CustomHeader navigation={navigation} title={'Explore'} />

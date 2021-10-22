@@ -3,16 +3,31 @@ import { View, Text, TouchableOpacity, Platform, StyleSheet, ScrollView } from '
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
-import CustomHeader from '../components/CustomHeader'
-// import { AuthContext } from '../navigation/AuthProvider'
+import { auth } from '../config/firebase'
 
 const SignupScreen = ({ navigation }) => {
-  const [name, setName] = useState()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [confirmPassword, setConfirmPassword] = useState()
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [imageUrl, setImageUrl] = useState(
+    'https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg'
+  )
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
 
-  // const { register } = useContext(AuthContext)
+  const handleCreateUser = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((authUser) => {
+        authUser.user.updateProfile({
+          displayName: name,
+          photoURL:
+            imageUrl ||
+            'https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.caribbeangamezone.com%2Fplayer%2Fmaxfreza%2Fattachment%2Favatar-placeholder%2F&psig=AOvVaw0fTa8DWDx_jKvLMJyUYCHO&ust=1635025979419000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjRuseA3_MCFQAAAAAdAAAAABAD',
+        })
+      })
+      .catch((error) => setError(error.message))
+  }
 
   return (
     <View style={styles.mainContainer}>
@@ -21,7 +36,7 @@ const SignupScreen = ({ navigation }) => {
 
         <FormInput
           labelValue={name}
-          onChangeText={(userName) => setEmail(userName)}
+          onChangeText={(userName) => setName(userName)}
           placeholderText="Name"
           iconType="user"
           keyboardType="default"
@@ -53,11 +68,8 @@ const SignupScreen = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
-
-        <FormButton
-          buttonTitle="Sign Up"
-          backgroundColor="#2a7abf" /*onPress={() => register(email, password)}*/
-        />
+        <Text>{error}</Text>
+        <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={handleCreateUser} />
 
         <View style={styles.textPrivate}>
           <Text style={styles.color_textPrivate}>

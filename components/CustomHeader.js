@@ -1,26 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { auth, db } from '../config/firebase'
 
-const CustomHeader = ({ navigation, title, screen }) => {
-  const openProfile = () => navigation.navigate('Login')
-  const closeSignup = () => navigation.navigate('Landing')
+import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
+
+const CustomHeader = ({ navigation, title, screen, id, uri }) => {
+  const [isUserAuth, setIsUserAuth] = useState(null)
+  const [image, setImage] = useState('')
+
+  const openProfile = () => navigation.navigate('Profile')
+  const openLogin = () => navigation.navigate('Login')
+
+  useEffect(() => {
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        setIsUserAuth(true)
+      }
+    })
+  }, [])
 
   return (
     <View style={styles.container}>
       <View style={styles.center}>
         <View style={{ marginLeft: 15 }}>
-          {title === 'Explore' || title === 'Add a product!' ? (
-            <MaterialCommunityIcons
-              onPress={openProfile}
-              name="account-circle"
-              size={38}
-              color="#A3B1B8"
-            />
-          ) : (
-            <MaterialIcons onPress={closeSignup} name="close" size={30} color="#24344C" />
-          )}
+          <Avatar
+            rounded
+            source={{
+              uri: auth?.currentUser?.photoURL,
+            }}
+            onPress={isUserAuth ? openProfile : openLogin}
+          />
+          {/* <MaterialCommunityIcons
+            onPress={isUserAuth ? openProfile : openLogin}
+            name="account-circle"
+            size={38}
+            color="#A3B1B8"
+          /> */}
         </View>
       </View>
       <View style={styles.centerMax}>

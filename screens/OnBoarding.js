@@ -9,7 +9,7 @@ const OnBoarding = ({ navigation }) => {
     <Onboarding
       // DoneButtonComponent={Done}
       onSkip={() => navigation.replace('Login')}
-      onDone={() => navigation.navigate('Login')}
+      onDone={() => navigation.replace('Login')}
       pages={[
         {
           backgroundColor: '#fff',

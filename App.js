@@ -14,9 +14,9 @@ export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched10').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched11').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched10', 'true')
+        AsyncStorage.setItem('alreadyLaunched11', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
@@ -45,13 +45,13 @@ export default function App() {
     return (
       <NavigationContainer>
         <Stack.Navigator>
+          <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+          <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
           <Stack.Screen
             name="Landing"
             options={{ headerShown: false }}
             component={BottomTabNavigator}
           />
-          <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-          <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
         </Stack.Navigator>
       </NavigationContainer>
     )

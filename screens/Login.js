@@ -1,15 +1,28 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, ScrollView } from 'react-native'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
-// import { AuthContext } from '../navigation/AuthProvider'
+import { auth } from '../config/firebase'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
+  const [error, setError] = useState('')
 
-  // const { login, googleLogin, fbLogin } = useContext(AuthContext)
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        navigation.replace('Landing')
+      }
+    })
+
+    return unsubscribe
+  }, [])
+
+  const Login = () => {
+    auth.signInWithEmailAndPassword(email, password).catch((error) => setError(error.message))
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -32,11 +45,8 @@ const Login = ({ navigation }) => {
         iconType="lock"
         secureTextEntry={true}
       />
-
-      <FormButton
-        buttonTitle="Log in"
-        backgroundColor="#2a7abf" /*onPress={() => login(email, password)}*/
-      />
+      <Text>{error}</Text>
+      <FormButton buttonTitle="Log in" backgroundColor="#2a7abf" onPress={Login} />
 
       <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
         <Text style={styles.navButtonText}>Forgot Password?</Text>
@@ -66,7 +76,7 @@ const Login = ({ navigation }) => {
         <Text style={styles.navButtonText}>Don't have an acount? Create here</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate('Landing')}>
+      <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.replace('Landing')}>
         <Text style={styles.navButtonText}>Continue as a guest...</Text>
       </TouchableOpacity>
     </ScrollView>
