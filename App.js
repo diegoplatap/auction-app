@@ -14,9 +14,9 @@ export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched6').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched10').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched6', 'true')
+        AsyncStorage.setItem('alreadyLaunched10', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
