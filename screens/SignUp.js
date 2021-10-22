@@ -24,7 +24,7 @@ const SignupScreen = ({ navigation }) => {
           onChangeText={(userName) => setEmail(userName)}
           placeholderText="Name"
           iconType="user"
-          keyboardType="email-address"
+          keyboardType="default"
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -33,7 +33,7 @@ const SignupScreen = ({ navigation }) => {
           onChangeText={(userEmail) => setEmail(userEmail)}
           placeholderText="Email"
           iconType="mail"
-          keyboardType="default"
+          keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
         />
@@ -103,10 +103,10 @@ export default SignupScreen
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'whitesmoke',
   },
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'whitesmoke',
     flex: 0.95,
     justifyContent: 'center',
     alignItems: 'center',

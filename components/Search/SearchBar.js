@@ -1,55 +1,59 @@
 import React from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
-import { windowHeight, windowWidth } from '../utils/Dimentions'
+import { windowHeight } from '../../utils/Dimentions'
 
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import { MaterialIcons } from '@expo/vector-icons'
+import { Feather } from '@expo/vector-icons'
 
-const FormInput = ({ labelValue, placeholderText, iconType, ...props }) => {
+const SearchBar = ({ placeholderText, iconType, ...props }) => {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.iconStyle}>
-        <AntDesign name={iconType} size={25} color="#666" />
+        <Feather name={iconType} size={22} color="#97a4a9" />
       </View>
       <TextInput
-        value={labelValue}
         style={styles.input}
-        numberOfLines={1}
+        autoCapitalize="none"
         placeholder={placeholderText}
-        placeholderTextColor="#666"
+        placeholderTextColor="#97a4a9"
         {...props}
       />
     </View>
   )
 }
 
-export default FormInput
+export default SearchBar
 
 const styles = StyleSheet.create({
   inputContainer: {
-    marginTop: 5,
+    marginTop: 15,
     marginBottom: 10,
-    width: '100%',
-    height: windowHeight / 15,
-    borderColor: '#ccc',
-    borderRadius: 15,
-    borderWidth: 1,
+    width: '80%',
+    height: windowHeight / 22,
+    borderRadius: 5,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+
+    elevation: 4,
   },
   iconStyle: {
-    padding: 10,
+    // padding: 5,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRightColor: '#ccc',
-    borderRightWidth: 1,
     width: 50,
   },
   input: {
-    padding: 10,
     flex: 1,
-    fontSize: 16,
+    fontSize: 15,
     // fontFamily: 'Lato-Regular', // ! This is an alert!! change it to ROBOTO!!!
     color: '#333',
     justifyContent: 'center',

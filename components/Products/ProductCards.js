@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     height: 360,
     width: 240,
     padding: 10,
+    marginLeft: 10,
     marginVertical: 5,
     backgroundColor: 'whitesmoke',
     borderRadius: 20,
