@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, ScrollView } from 'react-native'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
+
 import { auth } from '../config/firebase'
 
 const Login = ({ navigation }) => {

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { auth, db } from '../config/firebase'
-
+import { auth } from '../config/firebase'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 
-const CustomHeader = ({ navigation, title, screen, id, uri }) => {
+const CustomHeader = ({ navigation, title, uri }) => {
   const [isUserAuth, setIsUserAuth] = useState(null)
-  const [image, setImage] = useState('')
 
   const openProfile = () => navigation.navigate('Profile')
   const openLogin = () => navigation.navigate('Login')
@@ -27,16 +25,12 @@ const CustomHeader = ({ navigation, title, screen, id, uri }) => {
           <Avatar
             rounded
             source={{
-              uri: auth?.currentUser?.photoURL,
+              uri:
+                auth?.currentUser?.photoURL ||
+                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             }}
             onPress={isUserAuth ? openProfile : openLogin}
           />
-          {/* <MaterialCommunityIcons
-            onPress={isUserAuth ? openProfile : openLogin}
-            name="account-circle"
-            size={38}
-            color="#A3B1B8"
-          /> */}
         </View>
       </View>
       <View style={styles.centerMax}>

@@ -23,8 +23,6 @@ const ExploreStackNavigator = ({ navigation }) => {
       <Stack.Screen name="Home" component={Explore} />
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="Profile" component={Profile} />
-      {/* <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-      <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} /> */}
     </Stack.Navigator>
   )
 }
@@ -34,8 +32,6 @@ const AddProductsStackNavigator = ({ navigation }) => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Add product" component={AddProduct} />
       <Stack.Screen name="Profile" component={Profile} />
-      {/* <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-      <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} /> */}
     </Stack.Navigator>
   )
 }
@@ -43,8 +39,7 @@ const BookmarksStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="BookmarksStack" component={Bookmarks} />
-      {/* <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-      <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} /> */}
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   )
 }
@@ -52,8 +47,7 @@ const SettingsStackNavigator = ({ navigation }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="SettingsStack" component={Settings} />
-      {/* <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-      <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} /> */}
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   )
 }

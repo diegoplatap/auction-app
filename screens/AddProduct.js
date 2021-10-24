@@ -7,9 +7,9 @@ const AddProduct = ({ navigation }) => {
     <View style={styles.container}>
       <CustomHeader navigation={navigation} title={'Add a product!'} />
       <View style={styles.content}>
-        <Text>This is the home screen</Text>
+        <Text>Add products screen</Text>
         <Button
-          title="Go to product page"
+          title="Add a product"
           onPress={() => navigation.navigate('Product')}
           overlayContainerStyle={{ backgroundColor: 'white' }}
         />

@@ -6,6 +6,8 @@ import SearchBar from '../components/Search/SearchBar'
 import { auth, db } from '../config/firebase'
 
 const Explore = ({ navigation }) => {
+  const [image, setImage] = useState('')
+
   const [products, setProducts] = useState([
     { id: '1', name: 'Guitarra Kiesel' },
     { id: '2', name: 'Guitarra Verde' },
@@ -14,12 +16,12 @@ const Explore = ({ navigation }) => {
   ])
 
   useEffect(() => {
-    navigation.navigate('Landing')
+    setImage(auth?.currentUser?.photoURL)
   }, [])
 
   return (
     <View style={styles.container}>
-      <CustomHeader navigation={navigation} title={'Explore'} />
+      <CustomHeader navigation={navigation} title={'Explore'} source={{ uri: image }} />
       <View style={styles.searchBar}>
         <SearchBar
           placeholderText="Search products..."

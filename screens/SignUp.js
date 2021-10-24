@@ -5,7 +5,7 @@ import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
 
-const SignupScreen = ({ navigation }) => {
+const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [imageUrl, setImageUrl] = useState(
@@ -15,7 +15,7 @@ const SignupScreen = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleCreateUser = () => {
+  const register = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
@@ -23,7 +23,7 @@ const SignupScreen = ({ navigation }) => {
           displayName: name,
           photoURL:
             imageUrl ||
-            'https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.caribbeangamezone.com%2Fplayer%2Fmaxfreza%2Fattachment%2Favatar-placeholder%2F&psig=AOvVaw0fTa8DWDx_jKvLMJyUYCHO&ust=1635025979419000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCJjRuseA3_MCFQAAAAAdAAAAABAD',
+            'https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png',
         })
       })
       .catch((error) => setError(error.message))
@@ -69,7 +69,7 @@ const SignupScreen = ({ navigation }) => {
           secureTextEntry={true}
         />
         <Text>{error}</Text>
-        <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={handleCreateUser} />
+        <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={register} />
 
         <View style={styles.textPrivate}>
           <Text style={styles.color_textPrivate}>
@@ -110,7 +110,7 @@ const SignupScreen = ({ navigation }) => {
   )
 }
 
-export default SignupScreen
+export default Signup
 
 const styles = StyleSheet.create({
   mainContainer: {
