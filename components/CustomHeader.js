@@ -16,7 +16,7 @@ const CustomHeader = ({ navigation, title, uri }) => {
         setIsUserAuth(true)
       }
     })
-  }, [])
+  }, [isUserAuth])
 
   return (
     <View style={styles.container}>

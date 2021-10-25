@@ -1,13 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet } from 'react-native'
 import Onboarding from 'react-native-onboarding-swiper'
 import LottieView from 'lottie-react-native'
 
 const OnBoarding = ({ navigation }) => {
-  // const Done = ({ ...props }) => <Text stlye={{ marginRight: 16, color: 'red' }}>Done</Text>
   return (
     <Onboarding
-      // DoneButtonComponent={Done}
       onSkip={() => navigation.replace('Login')}
       onDone={() => navigation.replace('Login')}
       pages={[

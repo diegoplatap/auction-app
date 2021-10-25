@@ -1,16 +1,16 @@
-import React, { useContext, useState } from 'react'
-import { View, Text, TouchableOpacity, Platform, StyleSheet, ScrollView } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { View, Text, TouchableOpacity, Platform, StyleSheet, Button } from 'react-native'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
+import * as ImagePicker from 'expo-image-picker'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [imageUrl, setImageUrl] = useState(
-    'https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg'
-  )
+  const [imageUrl, setImageUrl] = useState('')
+  const [permission, setPermission] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
@@ -23,10 +23,32 @@ const Signup = ({ navigation }) => {
           displayName: name,
           photoURL:
             imageUrl ||
-            'https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png',
+            'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
         })
       })
       .catch((error) => setError(error.message))
+  }
+
+  const pickImage = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Permisson denied')
+      } else {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        })
+
+        console.log(result)
+
+        if (!result.cancelled) {
+          setImageUrl(result.uri)
+        }
+      }
+    }
   }
 
   return (
@@ -68,6 +90,8 @@ const Signup = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
+
+        <Button title="Pick an image from camera roll(Optional)" onPress={pickImage} />
         <Text>{error}</Text>
         <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={register} />
 
