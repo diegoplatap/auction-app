@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
   AddProductsStackNavigator,
   BookmarksStackNavigator,
@@ -21,6 +21,7 @@ function getWidth() {
 
 const BottomTabNavigator = ({ navigate }) => {
   const tabOffSetValue = useRef(new Animated.Value(0)).current
+
   return (
     <>
       <Tab.Navigator

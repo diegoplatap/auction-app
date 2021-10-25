@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Text, StyleSheet, View, FlatList, Button } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import ProductCard from '../components/Products/ProductCards'
 import SearchBar from '../components/Search/SearchBar'
-import { auth, db } from '../config/firebase'
 
 const Explore = ({ navigation }) => {
-  const [image, setImage] = useState('')
-
   const [products, setProducts] = useState([
     { id: '1', name: 'Guitarra Kiesel' },
     { id: '2', name: 'Guitarra Verde' },
@@ -15,13 +12,9 @@ const Explore = ({ navigation }) => {
     { id: '4', name: 'Guitarra Amarilla' },
   ])
 
-  useEffect(() => {
-    setImage(auth?.currentUser?.photoURL)
-  }, [])
-
   return (
     <View style={styles.container}>
-      <CustomHeader navigation={navigation} title={'Explore'} source={{ uri: image }} />
+      <CustomHeader navigation={navigation} title={'Explore'} />
       <View style={styles.searchBar}>
         <SearchBar
           placeholderText="Search products..."

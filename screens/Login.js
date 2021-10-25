@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, ScrollView }
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
-
 import { auth } from '../config/firebase'
 
 const Login = ({ navigation }) => {
@@ -19,7 +18,7 @@ const Login = ({ navigation }) => {
     })
 
     return unsubscribe
-  }, [])
+  }, [auth])
 
   const Login = () => {
     auth.signInWithEmailAndPassword(email, password).catch((error) => setError(error.message))

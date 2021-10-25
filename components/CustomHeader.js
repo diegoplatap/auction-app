@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
+
 import { auth } from '../config/firebase'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 
-const CustomHeader = ({ navigation, title, uri }) => {
+const CustomHeader = ({ navigation, title }) => {
   const [isUserAuth, setIsUserAuth] = useState(null)
 
   const openProfile = () => navigation.navigate('Profile')
@@ -16,7 +17,7 @@ const CustomHeader = ({ navigation, title, uri }) => {
         setIsUserAuth(true)
       }
     })
-  }, [isUserAuth])
+  }, [auth?.currentUser?.photoURL])
 
   return (
     <View style={styles.container}>

@@ -3,30 +3,39 @@ import { View, Text, TouchableOpacity, Platform, StyleSheet, Button } from 'reac
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
 import * as ImagePicker from 'expo-image-picker'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [imageUrl, setImageUrl] = useState('')
-  const [permission, setPermission] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
 
+  useEffect(() => {
+    console.log(navigation)
+  }, [navigation])
+
   const register = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        authUser.user.updateProfile({
-          displayName: name,
-          photoURL:
-            imageUrl ||
-            'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    if (password !== confirmPassword) {
+      setError(() => 'Passwords do not match')
+      return
+    } else {
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(async (authUser) => {
+          await authUser.user.updateProfile({
+            displayName: name,
+            photoURL:
+              imageUrl ||
+              'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+          })
         })
-      })
-      .catch((error) => setError(error.message))
+        .then(() => navigation.replace('Landing'))
+        .catch((error) => setError(error.message))
+    }
   }
 
   const pickImage = async () => {
@@ -41,9 +50,6 @@ const Signup = ({ navigation }) => {
           aspect: [4, 3],
           quality: 1,
         })
-
-        console.log(result)
-
         if (!result.cancelled) {
           setImageUrl(result.uri)
         }
@@ -74,7 +80,6 @@ const Signup = ({ navigation }) => {
           autoCapitalize="none"
           autoCorrect={false}
         />
-
         <FormInput
           labelValue={password}
           onChangeText={(userPassword) => setPassword(userPassword)}
@@ -82,7 +87,6 @@ const Signup = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
-
         <FormInput
           labelValue={confirmPassword}
           onChangeText={(userPassword) => setConfirmPassword(userPassword)}
@@ -90,7 +94,6 @@ const Signup = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
-
         <Button title="Pick an image from camera roll(Optional)" onPress={pickImage} />
         <Text>{error}</Text>
         <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={register} />
