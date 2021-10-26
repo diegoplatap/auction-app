@@ -4,6 +4,8 @@ import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
+import * as Google from 'expo-google-app-auth'
+import { onSignIn } from './GoogleAuth'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
@@ -22,6 +24,27 @@ const Login = ({ navigation }) => {
 
   const Login = () => {
     auth.signInWithEmailAndPassword(email, password).catch((error) => setError(error.message))
+  }
+
+  const signInWithGoogleAsync = async () => {
+    try {
+      const result = await Google.logInAsync({
+        // behavior: 'web',
+        androidClientId: '719319884640-u29gcptu1a6snl8e46j21h334kejglfs.apps.googleusercontent.com',
+        // iosClientId: YOUR_CLIENT_ID_HERE,
+        scopes: ['profile', 'email'],
+      })
+
+      if (result.type === 'success') {
+        onSignIn(result)
+        return result.accessToken
+      } else {
+        return { cancelled: true }
+      }
+    } catch (e) {
+      console.log('error:', e)
+      return { error: true }
+    }
   }
 
   return (
@@ -67,7 +90,7 @@ const Login = ({ navigation }) => {
             btnType="google"
             color="#de4d41"
             backgroundColor="#f5e7ea"
-            // onPress={() => googleLogin()}
+            onPress={signInWithGoogleAsync}
           />
         </View>
       ) : null}
