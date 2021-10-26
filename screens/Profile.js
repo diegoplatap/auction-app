@@ -12,10 +12,6 @@ const Profile = ({ navigation }) => {
     })
   }
 
-  useEffect(() => {
-    console.log(auth?.currentUser)
-  }, [])
-
   const myCustomShare = async () => {
     try {
       const result = await Share.share({
@@ -42,7 +38,9 @@ const Profile = ({ navigation }) => {
           <Avatar
             rounded
             source={{
-              uri: auth?.currentUser?.photoURL,
+              uri:
+                auth?.currentUser?.photoURL ||
+                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             }}
             size={80}
           />

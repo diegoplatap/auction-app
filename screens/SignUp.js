@@ -4,6 +4,7 @@ import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
 import { auth, db } from '../config/firebase'
+import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 
 const Signup = ({ navigation }) => {
@@ -13,10 +14,6 @@ const Signup = ({ navigation }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    console.log(navigation)
-  }, [navigation])
 
   const register = () => {
     if (password !== confirmPassword) {
@@ -35,6 +32,23 @@ const Signup = ({ navigation }) => {
         })
         .then(() => navigation.replace('Landing'))
         .catch((error) => setError(error.message))
+
+      auth.onAuthStateChanged((authUser) => {
+        if (authUser) {
+          db.collection('users')
+            .doc(authUser.uid)
+            .set({
+              displayName: name,
+              email: email,
+              createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+              photoURL: imageUrl,
+            })
+            .then(() => {
+              console.log('Document successfully written!')
+            })
+            .catch((error) => setError(error.message))
+        }
+      })
     }
   }
 
