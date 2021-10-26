@@ -6,6 +6,9 @@ import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
 import * as Google from 'expo-google-app-auth'
 import { onSignIn } from '../config/GoogleAuth'
+import { checkLoginState } from '../config/FacebookAuth'
+import * as Facebook from 'expo-facebook'
+import firebase from 'firebase'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
@@ -24,6 +27,31 @@ const Login = ({ navigation }) => {
 
   const Login = () => {
     auth.signInWithEmailAndPassword(email, password).catch((error) => setError(error.message))
+  }
+
+  const facebookLogIn = async () => {
+    try {
+      await Facebook.initializeAsync({
+        appId: '870849203622017',
+      })
+
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile', 'email'],
+        })
+      if (type === 'success') {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+        const facebookProfileData = await firebase.auth().signInWithCredential(credential)
+        return Promise.resolve({ type: 'success' })
+        // checkLoginState(await response)
+      } else {
+        // type === 'cancel'
+        return Promise.reject({ type: 'cancel' })
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`)
+    }
   }
 
   const signInWithGoogleAsync = async () => {
@@ -82,7 +110,7 @@ const Login = ({ navigation }) => {
             btnType="facebook"
             color="#4867aa"
             backgroundColor="#e6eaf4"
-            // onPress={() => fbLogin()}
+            onPress={facebookLogIn}
           />
 
           <SocialButton
