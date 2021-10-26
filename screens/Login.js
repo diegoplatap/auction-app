@@ -5,7 +5,7 @@ import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
 import * as Google from 'expo-google-app-auth'
-import { onSignIn } from './GoogleAuth'
+import { onSignIn } from '../config/GoogleAuth'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
