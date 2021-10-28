@@ -1,14 +1,13 @@
 import React from 'react'
 import { View, TextInput, StyleSheet } from 'react-native'
 import { windowHeight } from '../utils/Dimentions'
-
-import AntDesign from 'react-native-vector-icons/AntDesign'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const FormInput = ({ labelValue, placeholderText, iconType, ...props }) => {
   return (
     <View style={styles.inputContainer}>
       <View style={styles.iconStyle}>
-        <AntDesign name={iconType} size={25} color="#666" />
+        <MaterialIcons name={iconType} size={25} color="#666" />
       </View>
       <TextInput
         value={labelValue}
@@ -32,7 +31,7 @@ const styles = StyleSheet.create({
     height: windowHeight / 15,
     borderColor: '#ccc',
     borderRadius: 15,
-    borderWidth: 1,
+    borderWidth: 0.3,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',

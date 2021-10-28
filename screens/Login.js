@@ -25,8 +25,14 @@ const Login = ({ navigation }) => {
     return unsubscribe
   }, [auth])
 
-  const Login = () => {
-    auth.signInWithEmailAndPassword(email, password).catch((error) => setError(error.message))
+  const Login = async () => {
+    try {
+      await auth
+        .signInWithEmailAndPassword(email, password)
+        .catch((error) => setError(error.message))
+    } catch (error) {
+      setError('Email and password are required to log in')
+    }
   }
 
   const facebookLogIn = async () => {
@@ -77,7 +83,7 @@ const Login = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={require('../assets/Logo-temporal.png')} style={styles.logo} />
+      <Image source={require('../assets/logo-standard.png')} style={styles.logo} />
 
       <FormInput
         labelValue={email}
@@ -97,7 +103,7 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
       />
       <Text>{error}</Text>
-      <FormButton buttonTitle="Log in" backgroundColor="#2a7abf" onPress={Login} />
+      <FormButton buttonTitle="Log in" backgroundColor="#114E85" onPress={Login} />
 
       <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
         <Text style={styles.navButtonText}>Forgot Password?</Text>
@@ -123,12 +129,17 @@ const Login = ({ navigation }) => {
         </View>
       ) : null}
 
-      <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.navigate('Sign up')}>
-        <Text style={styles.navButtonText}>Don't have an acount? Create here</Text>
+      <TouchableOpacity style={styles.forgotButton}>
+        <View style={styles.createAccount}>
+          <Text style={styles.navButtonTextInfo}>Don't have an acount?</Text>
+          <Text style={styles.navButtonText} onPress={() => navigation.navigate('Sign up')}>
+            Create here
+          </Text>
+        </View>
       </TouchableOpacity>
-
+      <Text style={styles.navButtonTextInfo}>or</Text>
       <TouchableOpacity style={styles.forgotButton} onPress={() => navigation.replace('Landing')}>
-        <Text style={styles.navButtonText}>Continue as a guest...</Text>
+        <Text style={styles.navButtonText}>Continue as a guest</Text>
       </TouchableOpacity>
     </ScrollView>
   )
@@ -143,11 +154,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    paddingTop: 0,
+    // paddingTop: 0,
   },
   logo: {
-    height: 130,
-    width: 130,
+    height: 60,
+    width: 200,
     resizeMode: 'cover',
     marginBottom: 20,
   },
@@ -162,12 +173,21 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotButton: {
-    marginVertical: 25,
+    marginVertical: 20,
   },
   navButtonText: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#2a7abf',
+    color: '#195D99',
     // fontFamily: 'Lato-Regular', // ! This is an alert!! change it to ROBOTO!!!
+  },
+  createAccount: {
+    flexDirection: 'row',
+  },
+  navButtonTextInfo: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#63666A',
+    paddingRight: 8,
   },
 })

@@ -6,6 +6,7 @@ import SocialButton from '../components/SocialButton'
 import { auth, db } from '../config/firebase'
 import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
@@ -80,7 +81,7 @@ const Signup = ({ navigation }) => {
           labelValue={name}
           onChangeText={(userName) => setName(userName)}
           placeholderText="Name"
-          iconType="user"
+          iconType="person"
           keyboardType="default"
           autoCapitalize="none"
           autoCorrect={false}
@@ -108,19 +109,33 @@ const Signup = ({ navigation }) => {
           iconType="lock"
           secureTextEntry={true}
         />
-        <Button title="Pick an image from camera roll(Optional)" onPress={pickImage} />
-        <Text>{error}</Text>
-        <FormButton buttonTitle="Sign Up" backgroundColor="#2a7abf" onPress={register} />
+
+        <LinearGradient
+          colors={['#2977BA', '#195D99', '#114E85']}
+          start={{ x: 0, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.profilePic}
+        >
+          <TouchableOpacity>
+            <Text style={styles.uploadProfilePictureText} onPress={pickImage}>
+              {`Add a profile picture from gallery
+                    (Optional)`}
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
+
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+        <FormButton buttonTitle="Sign Up" backgroundColor="#114E85" onPress={register} />
 
         <View style={styles.textPrivate}>
           <Text style={styles.color_textPrivate}>
             By registering, you confirm that you accept our{' '}
           </Text>
           <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-            <Text style={[styles.color_textPrivate, { color: '#e88832' }]}>Terms of service</Text>
+            <Text style={[styles.color_textPrivate, { color: '#114E85' }]}>Terms of service</Text>
           </TouchableOpacity>
           <Text style={styles.color_textPrivate}> and </Text>
-          <Text style={[styles.color_textPrivate, { color: '#e88832' }]}>Privacy Policy</Text>
+          <Text style={[styles.color_textPrivate, { color: '#114E85' }]}>Privacy Policy</Text>
         </View>
 
         {Platform.OS === 'android' ? (
@@ -144,7 +159,13 @@ const Signup = ({ navigation }) => {
         ) : null}
 
         <TouchableOpacity style={styles.navButton} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.navButtonText}>Have an account? Sign In</Text>
+          <View style={styles.alreadyWithAccount}>
+            <Text style={styles.navButtonTextInfo}>Have an account?</Text>
+            <Text style={styles.navButtonText} onPress={() => navigation.navigate('Login')}>
+              {' '}
+              Sign In
+            </Text>
+          </View>
         </TouchableOpacity>
       </View>
     </View>
@@ -167,9 +188,9 @@ const styles = StyleSheet.create({
   },
   text: {
     // fontFamily: 'Lato-Regular', // ! CHANGE TO ROBOTO
-    fontSize: 28,
-    marginBottom: 20,
-    color: '#2a7abf',
+    fontSize: 25,
+    marginBottom: 10,
+    color: '#114E85',
   },
   navButton: {
     marginTop: 15,
@@ -177,8 +198,14 @@ const styles = StyleSheet.create({
   navButtonText: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#2a7abf',
+    color: '#195D99',
     // fontFamily: 'Lato-Regular', // ! CHANGE TO ROBOTO
+  },
+  navButtonTextInfo: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#63666A',
+    paddingRight: 8,
   },
   textPrivate: {
     flexDirection: 'row',
@@ -186,10 +213,32 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     justifyContent: 'center',
   },
+  uploadProfilePicture: {
+    backgroundColor: '#114E85',
+    color: 'white',
+  },
+  uploadProfilePictureText: {
+    color: 'white',
+  },
+  alreadyWithAccount: {
+    flexDirection: 'row',
+  },
   color_textPrivate: {
     fontSize: 13,
     fontWeight: '400',
     // fontFamily: 'Lato-Regular', // ! CHANGE TO ROBOTO
-    color: 'grey',
+    color: '#63666A',
+  },
+  error: {
+    marginBottom: 5,
+    color: 'red',
+  },
+  profilePic: {
+    elevation: 8,
+    borderRadius: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 20,
+    marginTop: 5,
+    marginBottom: 8,
   },
 })

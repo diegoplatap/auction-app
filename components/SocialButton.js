@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 import { windowHeight } from '../utils/Dimentions'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { Image } from 'react-native'
 
 const SocialButton = ({ buttonTitle, btnType, color, backgroundColor, ...props }) => {
   return (

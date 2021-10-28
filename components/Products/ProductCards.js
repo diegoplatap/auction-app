@@ -29,7 +29,7 @@ const ProductCard = (props) => {
                 end={{ x: 1, y: 1 }}
                 style={styles.button}
               >
-                <TouchableOpacity style={styles.bidCount}>
+                <TouchableOpacity>
                   <Text style={styles.buttonText}>03 Bidded</Text>
                 </TouchableOpacity>
               </LinearGradient>
