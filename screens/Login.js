@@ -9,6 +9,7 @@ import { onSignIn } from '../config/GoogleAuth'
 import { checkLoginState } from '../config/FacebookAuth'
 import * as Facebook from 'expo-facebook'
 import firebase from 'firebase'
+import GoogleButton from '../components/GoogleButton'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
@@ -118,12 +119,10 @@ const Login = ({ navigation }) => {
             backgroundColor="#e6eaf4"
             onPress={facebookLogIn}
           />
-
-          <SocialButton
+          <GoogleButton
             buttonTitle="Log In with Google"
-            btnType="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
+            color="gray"
+            backgroundColor="#FFFFFF"
             onPress={signInWithGoogleAsync}
           />
         </View>

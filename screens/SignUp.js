@@ -7,6 +7,7 @@ import { auth, db } from '../config/firebase'
 import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import { LinearGradient } from 'expo-linear-gradient'
+import GoogleButton from '../components/GoogleButton'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
@@ -148,12 +149,10 @@ const Signup = ({ navigation }) => {
               onPress={() => {}}
             />
 
-            <SocialButton
+            <GoogleButton
               buttonTitle="Sign Up with Google"
-              btnType="google"
-              color="#de4d41"
-              backgroundColor="#f5e7ea"
-              onPress={() => {}}
+              color="gray"
+              backgroundColor="#FFFFFF"
             />
           </View>
         ) : null}
