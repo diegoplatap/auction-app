@@ -5,11 +5,11 @@ import { windowHeight } from '../utils/Dimentions'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { Image } from 'react-native'
 
-const GoogleButton = ({ buttonTitle, btnType, color, backgroundColor, ...props }) => {
+const FacebookButton = ({ buttonTitle, btnType, color, backgroundColor, ...props }) => {
   return (
     <TouchableOpacity style={[styles.buttonContainer, { backgroundColor }]} {...props}>
       <View style={styles.iconWrapper}>
-        <Image source={require('../assets/LogoGoogle.png')} style={styles.icon} />
+        <Image source={require('../assets/LogoFacebook.png')} style={styles.icon} />
       </View>
       <View style={styles.btnTxtWrapper}>
         <Text style={[styles.buttonText, { color }]}>{buttonTitle}</Text>
@@ -18,7 +18,7 @@ const GoogleButton = ({ buttonTitle, btnType, color, backgroundColor, ...props }
   )
 }
 
-export default GoogleButton
+export default FacebookButton
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -35,9 +35,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    height: 40,
-    width: 40,
-    borderBottomLeftRadius: 10,
+    height: 30,
+    width: 30,
+    // borderBottomLeftRadius: 10,
   },
   btnTxtWrapper: {
     flex: 1,

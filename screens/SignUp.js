@@ -8,6 +8,7 @@ import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import { LinearGradient } from 'expo-linear-gradient'
 import GoogleButton from '../components/GoogleButton'
+import FacebookButton from '../components/FacebookButton'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
@@ -119,8 +120,7 @@ const Signup = ({ navigation }) => {
         >
           <TouchableOpacity>
             <Text style={styles.uploadProfilePictureText} onPress={pickImage}>
-              {`Add a profile picture from gallery
-                    (Optional)`}
+              Add a profile picture from gallery
             </Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -141,14 +141,11 @@ const Signup = ({ navigation }) => {
 
         {Platform.OS === 'android' ? (
           <View>
-            <SocialButton
+            <FacebookButton
               buttonTitle="Sign Up with Facebook"
-              btnType="facebook"
-              color="#4867aa"
-              backgroundColor="#e6eaf4"
-              onPress={() => {}}
+              color="white"
+              backgroundColor="#1877F2"
             />
-
             <GoogleButton
               buttonTitle="Sign Up with Google"
               color="gray"

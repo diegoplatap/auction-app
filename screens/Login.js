@@ -10,6 +10,7 @@ import { checkLoginState } from '../config/FacebookAuth'
 import * as Facebook from 'expo-facebook'
 import firebase from 'firebase'
 import GoogleButton from '../components/GoogleButton'
+import FacebookButton from '../components/FacebookButton'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
@@ -112,15 +113,14 @@ const Login = ({ navigation }) => {
 
       {Platform.OS === 'android' ? (
         <View>
-          <SocialButton
-            buttonTitle="Log In with Facebook"
-            btnType="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
+          <FacebookButton
+            buttonTitle="Continue with Facebook"
+            color="white"
+            backgroundColor="#1877F2"
             onPress={facebookLogIn}
           />
           <GoogleButton
-            buttonTitle="Log In with Google"
+            buttonTitle="Continue with Google"
             color="gray"
             backgroundColor="#FFFFFF"
             onPress={signInWithGoogleAsync}
