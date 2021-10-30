@@ -3,58 +3,30 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
-const ProductCard = ({ photoURL, title, bidded, highestBid, userName, navigation }) => {
-  const goToProduct = () => {
-    navigation.navigate('Product')
+const CategoriesCard = (props) => {
+  const goToChar = () => {
+    const { navigation, ...product } = props
+    navigation.navigate('Product', {
+      product,
+    })
   }
 
   return (
-    <TouchableOpacity style={styles.card} onPress={goToProduct}>
+    <TouchableOpacity style={styles.card} onPress={goToChar}>
       <View>
         <View style={styles.column}>
-          <Image source={{ uri: photoURL }} style={styles.image}></Image>
-          <Text style={styles.productTitle}>{title}</Text>
-          <View style={styles.creator}>
-            <View style={styles.creatorContainer}>
-              <MaterialCommunityIcons name="account-circle" size={30} color="#A3B1B8" />
-              <Text style={styles.creatorName}>{userName}</Text>
-            </View>
-            <View style={styles.buttonContainer}>
-              <LinearGradient
-                colors={['#2977BA', '#195D99', '#114E85']}
-                start={{ x: 0, y: 0.5 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.button}
-              >
-                <TouchableOpacity>
-                  <Text style={styles.buttonText}>
-                    {bidded < 10 ? `0${bidded} Bidded` : `${bidded} Bidded`}
-                  </Text>
-                </TouchableOpacity>
-              </LinearGradient>
-            </View>
-          </View>
-          <View style={styles.footerCard}>
-            <View style={styles.footerCardLeft}>
-              <Text style={styles.footerTitles}>Auction Ending in</Text>
-              <Text style={styles.timer}>02d 13h 12m 10s</Text>
-            </View>
-            <View style={styles.footerCardRight}>
-              <Text style={styles.footerTitles}>Highest Bid</Text>
-              <Text style={styles.timer}>{highestBid}</Text>
-            </View>
-          </View>
+          <Text style={styles.productCategory}>{props.name}</Text>
         </View>
       </View>
     </TouchableOpacity>
   )
 }
 
-export default ProductCard
+export default CategoriesCard
 
 const styles = StyleSheet.create({
   card: {
-    height: 360,
+    height: 50,
     width: 240,
     padding: 10,
     marginLeft: 10,
@@ -118,12 +90,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
   },
-  productTitle: {
+  productCategory: {
     color: '#24344C',
     fontWeight: '700',
-    fontSize: 20,
-    marginTop: 10,
-    marginBottom: 10,
+    fontSize: 17,
+    textAlign: 'center',
   },
   footerCard: {
     flexDirection: 'row',

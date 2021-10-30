@@ -1,16 +1,59 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, StyleSheet, View, FlatList, Button } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import ProductCard from '../components/Products/ProductCards'
+import CategoriesCard from '../components/Categories/CategoriesCard'
 import SearchBar from '../components/Search/SearchBar'
+import { db } from '../config/firebase'
 
 const Explore = ({ navigation }) => {
-  const [products, setProducts] = useState([
-    { id: '1', name: 'Guitarra Kiesel' },
-    { id: '2', name: 'Guitarra Verde' },
-    { id: '3', name: 'Guitarra Azul' },
-    { id: '4', name: 'Guitarra Amarilla' },
+  const [products, setProducts] = useState(null)
+  const [categories, setCategories] = useState([
+    { id: '1', name: 'Electrodomesticos' },
+    { id: '2', name: 'Tecnologia' },
+    { id: '3', name: 'Musica' },
+    { id: '4', name: 'NFT' },
   ])
+
+  const loadProducts = async () => {
+    try {
+      await db.collection('products').onSnapshot((querySnapshot) => {
+        const products = []
+        querySnapshot.docs.forEach((doc) => {
+          const {
+            title,
+            category,
+            bidded,
+            condition,
+            description,
+            endDate,
+            highestBid,
+            userName,
+            photoURL,
+          } = doc.data()
+          products.push({
+            title,
+            category,
+            bidded,
+            condition,
+            description,
+            endDate,
+            highestBid,
+            userName,
+            photoURL,
+            id: doc.id,
+          })
+        })
+        setProducts(products)
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    loadProducts()
+  }, [db])
 
   return (
     <View style={styles.container}>
@@ -23,6 +66,7 @@ const Explore = ({ navigation }) => {
           autoCorrect={false}
         />
       </View>
+
       <Text style={styles.text}>Trending Auctions 🔥</Text>
       <View style={styles.content}>
         <FlatList
@@ -30,9 +74,20 @@ const Explore = ({ navigation }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={products}
-          renderItem={({ item }) => (
-            <ProductCard style={styles.productCard} {...item} navigation={navigation} />
-          )}
+          renderItem={({ item }) => <ProductCard {...item} navigation={navigation} />}
+          keyExtractor={(item) => item.id}
+          numColumns={0}
+          ListFooterComponent={() => <View style={styles.space}></View>}
+        />
+      </View>
+      <Text style={styles.categoryText}>Featured Categories ⭐</Text>
+      <View style={styles.content}>
+        <FlatList
+          style={styles.flatList}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={categories}
+          renderItem={({ item }) => <CategoriesCard {...item} navigation={navigation} />}
           keyExtractor={(item) => item.id}
           numColumns={0}
           ListFooterComponent={() => <View style={styles.space}></View>}
@@ -50,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
@@ -58,11 +112,19 @@ const styles = StyleSheet.create({
   flatList: {
     paddingLeft: 20,
   },
-  text: {
+  categoryText: {
     color: '#24344C',
     fontWeight: '700',
     fontSize: 18,
     marginTop: 25,
+    paddingLeft: 20,
+    marginLeft: 18,
+  },
+  text: {
+    color: '#24344C',
+    fontWeight: '700',
+    fontSize: 18,
+    marginTop: 18,
     paddingLeft: 20,
     marginLeft: 18,
     marginBottom: 6,
