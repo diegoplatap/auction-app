@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, ScrollView } from 'react-native'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
-import SocialButton from '../components/SocialButton'
 import { auth } from '../config/firebase'
 import * as Google from 'expo-google-app-auth'
 import { onSignIn } from '../config/GoogleAuth'
@@ -107,7 +106,10 @@ const Login = ({ navigation }) => {
       <Text>{error}</Text>
       <FormButton buttonTitle="Log in" backgroundColor="#114E85" onPress={Login} />
 
-      <TouchableOpacity style={styles.forgotButton} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.forgotButton}
+        onPress={() => navigation.navigate('ResetPassword')}
+      >
         <Text style={styles.navButtonText}>Forgot Password?</Text>
       </TouchableOpacity>
 
