@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Share } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { auth } from '../config/firebase'
 
 const Profile = ({ navigation }) => {
@@ -33,8 +34,8 @@ const Profile = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.userInfoSection}>
-        <View style={{ flexDirection: 'row', marginTop: 15 }}>
+      <View style={styles.mainUserInfoSection}>
+        <View style={styles.avatarAndInfo}>
           <Avatar
             rounded
             source={{
@@ -44,7 +45,8 @@ const Profile = ({ navigation }) => {
             }}
             size={80}
           />
-          <View style={{ marginLeft: 20 }}>
+
+          <View style={{ marginLeft: 20, marginRight: 20 }}>
             <Text
               style={[
                 styles.title,
@@ -59,7 +61,21 @@ const Profile = ({ navigation }) => {
             <Text style={styles.caption}>{auth?.currentUser?.email}</Text>
           </View>
         </View>
+        <TouchableOpacity
+          style={{
+            alignItems: 'flex-end',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <MaterialCommunityIcons
+            name="account-edit-outline"
+            size={24}
+            color="black"
+            onPress={() => navigation.navigate('EditProfile')}
+          />
+        </TouchableOpacity>
       </View>
+
       <View style={styles.userInfoSection}>
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#A3B1B8" size={20} />
@@ -141,6 +157,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'whitesmoke',
     paddingTop: 40,
+  },
+  mainUserInfoSection: {
+    paddingHorizontal: 30,
+    marginBottom: 25,
+    marginTop: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  avatarAndInfo: {
+    flexDirection: 'row',
   },
   userInfoSection: {
     paddingHorizontal: 30,

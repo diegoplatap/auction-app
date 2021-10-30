@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import Explore from '../screens/Explore'
 import Product from '../screens/Product'
@@ -6,6 +6,7 @@ import AddProduct from '../screens/AddProduct'
 import Bookmarks from '../screens/Bookmarks'
 import Settings from '../screens/Settings'
 import Profile from '../screens/Profile'
+import EditProfile from '../screens/EditProfile'
 
 const Stack = createStackNavigator()
 
@@ -17,12 +18,13 @@ const screenOptionStyle = {
   },
 }
 
-const ExploreStackNavigator = ({ navigation }) => {
+const ExploreStackNavigator = ({ navigation, route }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Home" component={Explore} />
       <Stack.Screen name="Product" component={Product} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   )
 }

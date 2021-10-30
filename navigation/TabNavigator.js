@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   AddProductsStackNavigator,
   BookmarksStackNavigator,
@@ -9,6 +9,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Animated, Dimensions, StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import iconsName from '../utils/icons'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core'
 
 const Tab = createBottomTabNavigator()
 
@@ -19,8 +20,9 @@ function getWidth() {
   return width / 4
 }
 
-const BottomTabNavigator = ({ navigate }) => {
+const BottomTabNavigator = ({ navigate, route }) => {
   const tabOffSetValue = useRef(new Animated.Value(0)).current
+  const [tabBarHideOnKeyboard, setTabBarHideOnKeyboard] = useState(false)
 
   return (
     <>
@@ -65,6 +67,9 @@ const BottomTabNavigator = ({ navigate }) => {
                 toValue: 0,
                 useNativeDriver: true,
               }).start()
+              {
+                route === 'EditProfile' ? setTabBarHideOnKeyboard(true) : null
+              }
             },
           })}
         />
@@ -105,18 +110,20 @@ const BottomTabNavigator = ({ navigate }) => {
           })}
         />
       </Tab.Navigator>
-      <Animated.View
-        style={{
-          width: getWidth() - 35,
-          height: 2,
-          backgroundColor: '#2a7abf',
-          position: 'absolute',
-          bottom: 80,
-          left: 56,
-          borderRadius: 20,
-          transform: [{ translateX: tabOffSetValue }],
-        }}
-      />
+      {tabBarHideOnKeyboard ? null : (
+        <Animated.View
+          style={{
+            width: getWidth() - 35,
+            height: 2,
+            backgroundColor: '#2a7abf',
+            position: 'absolute',
+            bottom: 80,
+            left: 56,
+            borderRadius: 20,
+            transform: [{ translateX: tabOffSetValue }],
+          }}
+        />
+      )}
     </>
   )
 }
