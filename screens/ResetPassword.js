@@ -8,23 +8,31 @@ import { auth } from '../config/firebase'
 
 const ResetPassword = ({ navigation }) => {
   const [email, setEmail] = useState('')
-  const [visible, setVisible] = useState(false)
+  const [visibleSucess, setVisibleSucess] = useState(false)
+  const [visibleError, setVisibleError] = useState(false)
 
-  const toggleModal = () => {
-    setVisible(!visible)
+  const toggleModalSuccess = () => {
+    setVisibleSucess(!visibleSucess)
+  }
+  const toggleModalError = () => {
+    setVisibleError(!visibleError)
   }
 
-  const closeModal = () => {
-    setVisible(!visible)
+  const closeModalSuccess = () => {
+    setVisibleSucess(!visibleSucess)
+    navigation.navigate('Home')
+  }
+  const closeModalError = () => {
+    setVisibleError(!visibleError)
     navigation.navigate('Home')
   }
 
   const forgotPassword = async (email) => {
     try {
-      const emailSent = await auth.sendPasswordResetEmail(email)
-      toggleModal()
+      await auth.sendPasswordResetEmail(email)
+      toggleModalSuccess()
     } catch (error) {
-      toggleModal()
+      toggleModalError()
     }
   }
 
@@ -49,7 +57,7 @@ const ResetPassword = ({ navigation }) => {
         onPress={() => forgotPassword(email)}
       />
       <View style={styles.container}>
-        <Modal animationType={'slide'} transparent={false} visible={visible}>
+        <Modal animationType={'slide'} transparent={false} visible={visibleSucess}>
           <LottieView
             source={require('../assets/images/success.json')}
             style={{
@@ -63,14 +71,14 @@ const ResetPassword = ({ navigation }) => {
           />
           <View style={styles.resetPasswordText}>
             <Text style={styles.text}>Email password reset sent.</Text>
-            <Text style={styles.closeText} onPress={closeModal}>
+            <Text style={styles.closeText} onPress={closeModalSuccess}>
               Take me home
             </Text>
           </View>
         </Modal>
       </View>
       <View style={styles.container}>
-        <Modal animationType={'slide'} transparent={false} visible={visible}>
+        <Modal animationType={'slide'} transparent={false} visible={visibleError}>
           <LottieView
             source={require('../assets/images/error.json')}
             style={{
@@ -84,7 +92,7 @@ const ResetPassword = ({ navigation }) => {
           />
           <View style={styles.resetPasswordText}>
             <Text style={styles.text}>Please try again later.</Text>
-            <Text style={styles.closeText} onPress={closeModal}>
+            <Text style={styles.closeText} onPress={closeModalError}>
               Take me home
             </Text>
           </View>
@@ -105,9 +113,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    height: 400,
-    width: 500,
+    height: 300,
+    width: 200,
     marginBottom: 20,
+    marginLeft: 20,
   },
   container: {
     padding: 25,
