@@ -1,11 +1,16 @@
 import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { LinearGradient } from 'expo-linear-gradient'
 
-const ProductCard = ({ photoURL, title, bidded, highestBid, userName, navigation }) => {
+import { LinearGradient } from 'expo-linear-gradient'
+import { Avatar } from 'react-native-elements'
+
+const ProductCard = (props) => {
+  const { photoURL, title, bidded, highestBid, userName, userPhotoURL } = props
   const goToProduct = () => {
-    navigation.navigate('Product')
+    const { navigation, ...product } = props
+    navigation.navigate('Product', {
+      product,
+    })
   }
 
   return (
@@ -16,7 +21,15 @@ const ProductCard = ({ photoURL, title, bidded, highestBid, userName, navigation
           <Text style={styles.productTitle}>{title}</Text>
           <View style={styles.creator}>
             <View style={styles.creatorContainer}>
-              <MaterialCommunityIcons name="account-circle" size={30} color="#A3B1B8" />
+              <Avatar
+                rounded
+                size={25}
+                source={{
+                  uri:
+                    userPhotoURL ||
+                    'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+                }}
+              />
               <Text style={styles.creatorName}>{userName}</Text>
             </View>
             <View style={styles.buttonContainer}>
@@ -87,6 +100,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#A3B1B8',
     borderBottomWidth: 0.5,
     marginBottom: 14,
+    marginLeft: 6,
   },
   creatorContainer: {
     flexDirection: 'row',
@@ -124,6 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginTop: 10,
     marginBottom: 10,
+    marginLeft: 5,
   },
   footerCard: {
     flexDirection: 'row',
@@ -144,6 +159,6 @@ const styles = StyleSheet.create({
   timer: {
     color: '#24344C',
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 })

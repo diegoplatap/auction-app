@@ -30,6 +30,7 @@ const Explore = ({ navigation }) => {
             highestBid,
             userName,
             photoURL,
+            userPhotoURL,
           } = doc.data()
           products.push({
             title,
@@ -41,6 +42,7 @@ const Explore = ({ navigation }) => {
             highestBid,
             userName,
             photoURL,
+            userPhotoURL,
             id: doc.id,
           })
         })

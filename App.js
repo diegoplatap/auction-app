@@ -7,6 +7,8 @@ import OnBoarding from './screens/OnBoarding'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Login from './screens/Login'
 import Signup from './screens/SignUp'
+import Product from './screens/Product'
+import EditProfile from './screens/EditProfile'
 
 const Stack = createStackNavigator()
 
@@ -39,6 +41,8 @@ export default function App() {
         <Stack.Screen name="Onboarding" options={{ headerShown: false }} component={OnBoarding} />
         <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
         <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
+        <Stack.Screen name="Product" options={{ headerShown: false }} component={Product} />
+        <Stack.Screen name="EditProfile" options={{ headerShown: false }} component={EditProfile} />
         <Stack.Screen
           name="Landing"
           options={{ headerShown: false }}

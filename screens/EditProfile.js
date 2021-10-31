@@ -2,19 +2,21 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity, ImageBackground, TextInput, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Feather from 'react-native-vector-icons/Feather'
 import Animated from 'react-native-reanimated'
 import BottomSheet from 'reanimated-bottom-sheet'
 import { auth } from '../config/firebase'
 import * as ImagePicker from 'expo-image-picker'
-import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
+import ProfileHeader from '../components/ProfilesHeader'
 
-// import { Camera } from 'expo-camera'
-
-const EditProfile = () => {
-  const [image, setImage] = useState('')
-  // const { colors } = useTheme()
+const EditProfile = ({ navigation }) => {
+  const [imageUrl, setImageUrl] = useState({
+    uri:
+      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' ||
+      auth?.currentUser?.photoURL,
+  })
 
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
@@ -29,7 +31,10 @@ const EditProfile = () => {
           quality: 1,
         })
         if (!result.cancelled) {
-          setImageUrl(result.uri)
+          setImageUrl((prevState) => ({
+            ...prevState,
+            uri: result.uri,
+          }))
         }
       }
     }
@@ -63,9 +68,10 @@ const EditProfile = () => {
 
   return (
     <View style={styles.container}>
+      <ProfileHeader navigation={navigation} title={'Edit profile '} />
       <BottomSheet
         ref={bs}
-        snapPoints={[330, 0]}
+        snapPoints={[250, 0]}
         renderContent={renderInner}
         renderHeader={renderHeader}
         initialSnap={1}
@@ -86,15 +92,6 @@ const EditProfile = () => {
                 alignItems: 'center',
               }}
             >
-              {/* <Avatar
-                rounded
-                size="xlarge"
-                source={{
-                  uri: auth?.currentUser?.photoURL,
-                }}
-                showAccessory
-                accessory={{ backgroundColor: 'blue' }}
-              /> */}
               <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
                 <View
                   style={{
@@ -106,9 +103,7 @@ const EditProfile = () => {
                   }}
                 >
                   <ImageBackground
-                    source={{
-                      uri: auth?.currentUser?.photoURL,
-                    }}
+                    source={imageUrl}
                     style={{ height: 140, width: 140 }}
                     imageStyle={{ borderRadius: 70 }}
                   >
@@ -142,7 +137,7 @@ const EditProfile = () => {
         </View>
 
         <View style={styles.action}>
-          <FontAwesome name="user-o" size={20} />
+          <MaterialIcons name="person" size={25} color="black" />
           <TextInput
             placeholder="Name"
             placeholderTextColor="#666666"
@@ -151,7 +146,7 @@ const EditProfile = () => {
           />
         </View>
         <View style={styles.action}>
-          <Feather name="phone" size={20} />
+          <MaterialIcons name="phone" size={25} color="black" />
           <TextInput
             placeholder="Phone"
             placeholderTextColor="#666666"
@@ -161,28 +156,9 @@ const EditProfile = () => {
           />
         </View>
         <View style={styles.action}>
-          <FontAwesome name="envelope-o" size={20} />
+          <MaterialIcons name="location-pin" size={20} />
           <TextInput
-            placeholder="Email"
-            placeholderTextColor="#666666"
-            keyboardType="email-address"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-        </View>
-        <View style={styles.action}>
-          <FontAwesome name="globe" size={20} />
-          <TextInput
-            placeholder="Country"
-            placeholderTextColor="#666666"
-            autoCorrect={false}
-            style={styles.textInput}
-          />
-        </View>
-        <View style={styles.action}>
-          <Icon name="map-marker-outline" size={20} />
-          <TextInput
-            placeholder="City"
+            placeholder="Address"
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={styles.textInput}
@@ -201,11 +177,12 @@ export default EditProfile
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // backgroundColor: '#FFFFFF',
   },
   commandButton: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: '#FF6347',
+    backgroundColor: '#114E85',
     alignItems: 'center',
     marginTop: 10,
   },
@@ -254,7 +231,7 @@ const styles = StyleSheet.create({
   panelButton: {
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#FF6347',
+    backgroundColor: '#114E85',
     alignItems: 'center',
     marginVertical: 4,
   },
@@ -280,7 +257,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    marginTop: Platform.OS === 'ios' ? 0 : -3.5,
     paddingLeft: 10,
     color: '#05375a',
   },

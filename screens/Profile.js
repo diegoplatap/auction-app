@@ -66,13 +66,10 @@ const Profile = ({ navigation }) => {
             alignItems: 'flex-end',
             justifyContent: 'flex-start',
           }}
+          onPress={() => navigation.navigate('EditProfile')}
         >
-          <MaterialCommunityIcons
-            name="account-edit-outline"
-            size={24}
-            color="black"
-            onPress={() => navigation.navigate('EditProfile')}
-          />
+          <MaterialCommunityIcons name="account-edit-outline" size={24} color="#24344C" />
+          <Text style={{ fontSize: 12, marginRight: 3, color: '#24344C' }}>edit</Text>
         </TouchableOpacity>
       </View>
 
@@ -175,11 +172,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#24344C',
   },
   caption: {
     fontSize: 14,
     lineHeight: 14,
     fontWeight: '500',
+    color: '#24344C',
   },
   row: {
     flexDirection: 'row',

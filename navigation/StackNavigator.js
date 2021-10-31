@@ -23,9 +23,9 @@ const ExploreStackNavigator = ({ navigation, route }) => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Home" component={Explore} />
-      <Stack.Screen name="Product" component={Product} />
+      {/* <Stack.Screen name="Product" component={Product} /> */}
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   )
@@ -36,7 +36,7 @@ const AddProductsStackNavigator = ({ navigation }) => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Add product" component={AddProduct} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   )
@@ -46,7 +46,7 @@ const BookmarksStackNavigator = ({ navigation }) => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="BookmarksStack" component={Bookmarks} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   )
@@ -56,7 +56,7 @@ const SettingsStackNavigator = ({ navigation }) => {
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="SettingsStack" component={Settings} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="EditProfile" component={EditProfile} />
+      {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
     </Stack.Navigator>
   )

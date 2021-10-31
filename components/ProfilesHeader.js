@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const ProductHeader = ({ navigation, title }) => {
+const ProfileHeader = ({ navigation, title }) => {
   const goBack = () => {
     navigation.goBack()
   }
@@ -31,16 +31,16 @@ const ProductHeader = ({ navigation, title }) => {
   )
 }
 
-export default ProductHeader
+export default ProfileHeader
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     flexDirection: 'row',
     marginTop: 30, // esta propiedad la utilizo para que se vea bien en el emulador
     height: 60,
-    borderBottomColor: '#A3B1B8',
-    borderBottomWidth: 0.5,
+    // borderBottomColor: '#A3B1B8',
+    // borderBottomWidth: 0.5,
   },
   center: {
     flex: 1,
