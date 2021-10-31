@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 30, // esta propiedad la utilizo para que se vea bien en el emulador
     height: 60,
-    borderBottomColor: '#A3B1B8',
-    borderBottomWidth: 0.5,
+    // borderBottomColor: '#A3B1B8',
+    // borderBottomWidth: 0.5,
   },
   center: {
     flex: 1,

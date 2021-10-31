@@ -1,5 +1,6 @@
+import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import ProductHeader from '../components/ProductHeader'
 
@@ -36,6 +37,22 @@ const Product = ({ route, navigation }) => {
       <Text style={styles.description}>Description</Text>
       <View style={styles.productInfo}>
         <Text style={styles.productDescription}>{product.description}</Text>
+      </View>
+      <View>
+        <View style={styles.buttonContainer}>
+          <LinearGradient
+            colors={['#2977BA', '#195D99', '#114E85']}
+            start={{ x: 0, y: 0.5 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.button}
+          >
+            <TouchableOpacity>
+              <Text style={styles.buttonText}>{`Place a Bid      |     ${
+                product.highestBid + 1
+              } `}</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
       </View>
     </View>
   )
@@ -101,5 +118,21 @@ const styles = StyleSheet.create({
     height: 320,
     width: 400,
     marginBottom: 20,
+  },
+  buttonContainer: {
+    marginBottom: 10,
+    padding: 40,
+  },
+  button: {
+    elevation: 8,
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 6,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 18,
+    padding: 3,
   },
 })

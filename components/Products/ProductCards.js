@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   creatorName: {
-    paddingLeft: 4,
+    marginLeft: 10,
     fontSize: 12,
   },
   buttonContainer: {
