@@ -5,6 +5,7 @@ import ProductCard from '../components/Products/ProductCards'
 import CategoriesCard from '../components/Categories/CategoriesCard'
 import SearchBar from '../components/Search/SearchBar'
 import { db } from '../config/firebase'
+import LottieView from 'lottie-react-native'
 
 const Explore = ({ navigation }) => {
   const [products, setProducts] = useState(null)
@@ -68,33 +69,48 @@ const Explore = ({ navigation }) => {
           autoCorrect={false}
         />
       </View>
-
-      <Text style={styles.text}>Trending Auctions 🔥</Text>
-      <View style={styles.content}>
-        <FlatList
-          style={styles.flatList}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={products}
-          renderItem={({ item }) => <ProductCard {...item} navigation={navigation} />}
-          keyExtractor={(item) => item.id}
-          numColumns={0}
-          ListFooterComponent={() => <View style={styles.space}></View>}
+      {products ? (
+        <>
+          <Text style={styles.text}>Trending Auctions 🔥</Text>
+          <View style={styles.content}>
+            <FlatList
+              style={styles.flatList}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={products}
+              renderItem={({ item }) => <ProductCard {...item} navigation={navigation} />}
+              keyExtractor={(item) => item.id}
+              numColumns={0}
+              ListFooterComponent={() => <View style={styles.space}></View>}
+            />
+          </View>
+          <Text style={styles.categoryText}>Featured Categories ⭐</Text>
+          <View style={styles.content}>
+            <FlatList
+              style={styles.flatList}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={categories}
+              renderItem={({ item }) => <CategoriesCard {...item} navigation={navigation} />}
+              keyExtractor={(item) => item.id}
+              numColumns={0}
+              ListFooterComponent={() => <View style={styles.space}></View>}
+            />
+          </View>
+        </>
+      ) : (
+        <LottieView
+          source={require('../assets/images/loading.json')}
+          style={{
+            width: 100,
+            height: 100,
+            marginLeft: 70,
+            marginTop: 100,
+          }}
+          autoPlay
+          loop
         />
-      </View>
-      <Text style={styles.categoryText}>Featured Categories ⭐</Text>
-      <View style={styles.content}>
-        <FlatList
-          style={styles.flatList}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={categories}
-          renderItem={({ item }) => <CategoriesCard {...item} navigation={navigation} />}
-          keyExtractor={(item) => item.id}
-          numColumns={0}
-          ListFooterComponent={() => <View style={styles.space}></View>}
-        />
-      </View>
+      )}
     </View>
   )
 }

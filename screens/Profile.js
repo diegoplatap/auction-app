@@ -32,6 +32,8 @@ const Profile = ({ navigation }) => {
     }
   }
 
+  console.log('TESTTTTTTTT:', auth.currentUser)
+
   return (
     <View style={styles.container}>
       <View style={styles.mainUserInfoSection}>
@@ -77,7 +79,7 @@ const Profile = ({ navigation }) => {
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#A3B1B8" size={20} />
           <Text style={{ color: '#777777', marginLeft: 20 }}>
-            {auth?.currentUser?.location || 'Update your address in settings'}
+            {auth?.currentUser?.address || 'Update your address in settings'}
           </Text>
         </View>
         <View style={styles.row}>

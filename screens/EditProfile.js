@@ -12,12 +12,30 @@ import * as ImagePicker from 'expo-image-picker'
 import ProfileHeader from '../components/ProfilesHeader'
 
 const EditProfile = ({ navigation }) => {
-  const [imageUrl, setImageUrl] = useState({
-    uri:
-      'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png' ||
-      auth?.currentUser?.photoURL,
-  })
+  const [name, setName] = useState(auth.currentUser.displayName)
+  const [address, setAddress] = useState(auth.currentUser.address)
+  const [phone, setPhone] = useState(auth.currentUser.phoneNumber)
+  const [imageUrl, setImageUrl] = useState(auth?.currentUser?.photoURL)
 
+  const updateProfile = async () => {
+    await auth.currentUser
+      .updateProfile({
+        displayName: name,
+        photoURL: imageUrl,
+        address: address,
+        phoneNumber: phone,
+      })
+      .then(() => {
+        console.log('Update succesfull')
+        // Update successful
+        // ...
+      })
+      .catch((error) => {
+        console.log(error)
+        // An error occurred
+        // ...
+      })
+  }
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -31,15 +49,13 @@ const EditProfile = ({ navigation }) => {
           quality: 1,
         })
         if (!result.cancelled) {
-          setImageUrl((prevState) => ({
-            ...prevState,
-            uri: result.uri,
-          }))
+          setImageUrl(result.uri)
         }
       }
     }
   }
-
+  console.log(auth.currentUser)
+  console.log(phone)
   const renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: 'center' }}>
@@ -103,7 +119,7 @@ const EditProfile = ({ navigation }) => {
                   }}
                 >
                   <ImageBackground
-                    source={imageUrl}
+                    source={{ uri: imageUrl }}
                     style={{ height: 140, width: 140 }}
                     imageStyle={{ borderRadius: 70 }}
                   >
@@ -143,6 +159,7 @@ const EditProfile = ({ navigation }) => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={styles.textInput}
+            onChangeText={(name) => setName(name)}
           />
         </View>
         <View style={styles.action}>
@@ -153,6 +170,7 @@ const EditProfile = ({ navigation }) => {
             keyboardType="number-pad"
             autoCorrect={false}
             style={styles.textInput}
+            onChangeText={(newPhone) => setPhone(newPhone)}
           />
         </View>
         <View style={styles.action}>
@@ -162,10 +180,13 @@ const EditProfile = ({ navigation }) => {
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={styles.textInput}
+            onChangeText={(newAddress) => setAddress(newAddress)}
           />
         </View>
         <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
-          <Text style={styles.panelButtonTitle}>Submit</Text>
+          <Text style={styles.panelButtonTitle} onPress={updateProfile}>
+            Submit
+          </Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

@@ -44,7 +44,11 @@ const Signup = ({ navigation }) => {
               displayName: name,
               email: email,
               createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-              photoURL: imageUrl,
+              photoURL:
+                imageUrl ||
+                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+              phoneNumber: null,
+              address: null,
             })
             .then(() => {
               console.log('Document successfully written!')

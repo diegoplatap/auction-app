@@ -4,15 +4,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const CategoriesCard = (props) => {
-  const goToChar = () => {
-    const { navigation, ...product } = props
-    navigation.navigate('Product', {
-      product,
-    })
-  }
+  // const goToChar = () => {
+  //   const { navigation, ...product } = props
+  //   navigation.navigate('Product', {
+  //     product,
+  //   })
+  // }
 
   return (
-    <TouchableOpacity style={styles.card} onPress={goToChar}>
+    <TouchableOpacity style={styles.card} /*onPress={goToChar}*/>
       <View>
         <View style={styles.column}>
           <Text style={styles.productCategory}>{props.name}</Text>
