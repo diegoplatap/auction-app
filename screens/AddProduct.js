@@ -1,11 +1,28 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
-import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
+import React, { useContext, useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
+import UserContext from '../context/UserContext'
+import { windowHeight } from '../utils/Dimentions'
+import { Picker } from '@react-native-community/picker'
 
 const AddProduct = ({ route, navigation }) => {
-  const [imageUrl, setImageUrl] = useState({})
+  const { currentUser } = useContext(UserContext)
+  const [product, setProduct] = useState({
+    bidded: 0,
+    category: '',
+    condition: '',
+    description: '',
+    endDate: '',
+    highestBid: '',
+    photoURL: '',
+    title: '',
+    userName: currentUser?.displayName,
+    userId: currentUser?.userId,
+    userPhotoURL: currentUser?.photoURL,
+  })
+
+  // categories: "Technology", "Music", "Household appliances", "NTF'S"
 
   return (
     <View style={styles.container}>
@@ -16,19 +33,36 @@ const AddProduct = ({ route, navigation }) => {
           style={styles.image}
         />
       </View>
-      <Text style={styles.title}>Hello</Text>
-      <View style={styles.userInfo}>
-        <View style={styles.avatarName}>
-          <Text style={styles.userName}>Hello</Text>
+      <View style={styles.inputContainer}>
+        <View>
+          <TextInput
+            // value={phone}
+            placeholder="Title"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            style={styles.textInput}
+            // onChangeText={setPhone}
+          />
         </View>
-        <View style={styles.highestBid}>
-          <Text style={styles.userName}>Highest Bid</Text>
-          <Text style={styles.highestBidValue}>Hello</Text>
+        <View>
+          <TextInput
+            // value={phone}
+            placeholder="Description"
+            placeholderTextColor="#666666"
+            autoCorrect={false}
+            style={styles.textInput}
+            // onChangeText={setPhone}
+          />
         </View>
-      </View>
-      <Text style={styles.description}>Description</Text>
-      <View style={styles.productInfo}>
-        <Text style={styles.productDescription}>Hello</Text>
+        <View>
+          <Picker
+            selectedValue={selectedLanguage}
+            onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+          >
+            <Picker.Item label="Java" value="java" />
+            <Picker.Item label="JavaScript" value="js" />
+          </Picker>
+        </View>
       </View>
       <View>
         <View style={styles.buttonContainer}>
@@ -38,11 +72,9 @@ const AddProduct = ({ route, navigation }) => {
             end={{ x: 1, y: 1 }}
             style={styles.button}
           >
-            {/* <TouchableOpacity>
-              <Text style={styles.buttonText}>{`Place a Bid      |     ${
-                product.highestBid + 1
-              } `}</Text>
-            </TouchableOpacity> */}
+            <TouchableOpacity>
+              <Text style={styles.buttonText}>{`Add product`}</Text>
+            </TouchableOpacity>
           </LinearGradient>
         </View>
       </View>
@@ -107,17 +139,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   image: {
-    height: 320,
+    height: 200,
     width: 400,
     marginBottom: 20,
   },
   buttonContainer: {
-    marginBottom: 10,
-    padding: 40,
+    // marginBottom: 20,
+    paddingHorizontal: 30,
   },
   button: {
     elevation: 8,
-    borderRadius: 8,
+    borderRadius: 15,
     paddingVertical: 14,
     paddingHorizontal: 6,
   },
@@ -126,5 +158,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     padding: 3,
+  },
+  inputContainer: {
+    padding: 20,
+  },
+  textInput: {
+    marginTop: 3,
+    marginBottom: 10,
+    width: '100%',
+    height: windowHeight / 18,
+    borderColor: '#ccc',
+    borderRadius: 15,
+    borderWidth: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingLeft: 15,
   },
 })
