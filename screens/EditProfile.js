@@ -16,10 +16,8 @@ const EditProfile = ({ navigation }) => {
   const [address, setAddress] = useState(currentUser?.address)
   const [phone, setPhone] = useState(currentUser?.phoneNumber)
   const [imageUrl, setImageUrl] = useState(currentUser?.photoURL)
-  // console.log('🚀 ~ file: EditProfile.js ~ line 19 ~ EditProfile ~ imageUrl', imageUrl)
   const [error, setError] = useState('')
   const [url, setUrl] = useState('')
-  const [imagen, setImagen] = useState(null)
 
   const onClickUpdateProfile = async () => {
     try {
