@@ -12,10 +12,10 @@ import UserContext from '../context/UserContext'
 
 const EditProfile = ({ navigation }) => {
   const { currentUser, updateProfile } = useContext(UserContext)
-  const [name, setName] = useState(currentUser.displayName)
-  const [address, setAddress] = useState(currentUser.address)
-  const [phone, setPhone] = useState(currentUser.phoneNumber)
-  const [imageUrl, setImageUrl] = useState(currentUser.photoURL)
+  const [name, setName] = useState(currentUser?.displayName)
+  const [address, setAddress] = useState(currentUser?.address)
+  const [phone, setPhone] = useState(currentUser?.phoneNumber)
+  const [imageUrl, setImageUrl] = useState(currentUser?.photoURL)
   const [error, setError] = useState('')
 
   const onClickUpdateProfile = async () => {

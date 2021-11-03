@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import firebase from 'firebase'
-import { auth, db } from '../config/firebase'
+import { auth, db, storage } from '../config/firebase'
 import * as Facebook from 'expo-facebook'
 
 const UserContext = React.createContext()
@@ -8,12 +8,12 @@ const UserContext = React.createContext()
 export function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
 
-  const register = async (name, email, password, imageUrl) => {
+  const register = async (name, email, password, url) => {
     await auth.createUserWithEmailAndPassword(email, password).then(async (authUser) => {
       await authUser.user.updateProfile({
         displayName: name,
         photoURL:
-          imageUrl ||
+          url ||
           'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
       })
     })
@@ -28,7 +28,7 @@ export function UserContextProvider({ children }) {
             email: email,
             createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
             photoURL:
-              imageUrl ||
+              url ||
               'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             phoneNumber: '',
             address: '',
@@ -45,9 +45,10 @@ export function UserContextProvider({ children }) {
     await auth.signInWithEmailAndPassword(email, password)
   }
 
-  const signOutUser = (navigation) => {
-    auth.signOut().then(() => {
+  const signOutUser = async (navigation) => {
+    await auth.signOut().then(() => {
       navigation.replace('Landing')
+      setCurrentUser('')
     })
   }
 
@@ -113,14 +114,14 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  const updateProfile = (name, phone, address, imageUrl) => {
+  const updateProfile = (name, phone, address, url) => {
     const userRef = db.collection('users').doc(currentUser.userId)
 
     return userRef.update({
       displayName: name || currentUser?.displayName,
       phoneNumber: phone || currentUser?.phoneNumber,
       address: address || currentUser?.address,
-      photoURL: imageUrl || currentUser?.photoURL,
+      photoURL: url || currentUser?.photoURL,
       updateDate: firebase.firestore.FieldValue.serverTimestamp(),
     })
   }

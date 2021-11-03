@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Platform, StyleSheet, Button } from 'reac
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
 import SocialButton from '../components/SocialButton'
-import { auth, db } from '../config/firebase'
+import { auth, db, storage } from '../config/firebase'
 import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -18,6 +18,8 @@ const Signup = ({ navigation }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
+  const [url, setUrl] = useState('')
+  const [progress, setProgress] = useState(0)
 
   const { register, facebookLogIn } = useContext(UserContext)
 
@@ -27,12 +29,27 @@ const Signup = ({ navigation }) => {
         setError('Passwords do not match')
         return
       } else {
-        await register(name, email, password, imageUrl)
+        await register(name, email, password, url)
         navigation.replace('Landing')
       }
     } catch (error) {
       setError(error.message)
     }
+  }
+
+  const getPictureBlob = (uri) => {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.onload = function () {
+        resolve(xhr.response)
+      }
+      xhr.onerror = function (e) {
+        reject(new TypeError('Network request failed'))
+      }
+      xhr.responseType = 'blob'
+      xhr.open('GET', imageUrl, true)
+      xhr.send(null)
+    })
   }
 
   const pickImage = async () => {
@@ -42,17 +59,94 @@ const Signup = ({ navigation }) => {
         alert('Permisson denied')
       } else {
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          // mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
           aspect: [4, 3],
-          quality: 1,
+          // quality: 1,
         })
+
         if (!result.cancelled) {
           setImageUrl(result.uri)
+          let blob
+          try {
+            blob = await getPictureBlob(imageUrl)
+            const ref = await storage.ref().child(`imageProfile/${email}`)
+            const snapshot = await ref.put(blob)
+            const urlProfilePicture = await snapshot.ref.getDownloadURL()
+            setUrl(urlProfilePicture)
+          } catch (e) {
+            alert('Please Select a Photo First')
+          } finally {
+            blob.close()
+
+            alert('saved successfully')
+          }
+
+          //
+          //   const imagen = result.uri
+
+          //   uploadImage(imagen)
+          //     .then((resolve) => {
+          //       storage
+          //         .ref(`images/${email}`)
+          //         .put(resolve)
+          //         .then((resolve) => {
+          //           console.log('Imagen subida correctamente')
+          //         })
+          //         .catch((error) => {
+          //           console.log('Error al subir la imagen')
+          //         })
+          //     })
+          //     .catch((error) => {
+          //       console.log(error)
+          //     })
+          // }
         }
+
+        // const metadata = {
+        //   contentType: 'image/jpeg',
+        // }
+
+        // await storage.ref(`images/${email}`).put(imageUrl, metadata)
+
+        // await storage
+        // .ref(`images/${email}`)
+        // .getDownloadURL()
+        // .then((resolve) => {
+        //   setUrl(resolve)
+        // })
+        // .catch((error) => {
+        //   console.log(error)
+        // })
+
+        // await uploadTask.on('state_changed', () => {
+        //   storage
+        //     .ref(`images/${email}`)
+        //     .getDownloadURL()
+        //     .then((url) => {
+        //       setUrl(url)
+        //     })
+        // })
+        // }
+        // }
       }
     }
   }
+
+  // const loadImage = async () => {
+  //   let imgUrl = await uploadImageToBucket()
+  //   return imgUrl
+  //   // console.log('loadimage', email)
+  //   // await storage
+  //   //   .ref(`images/${email}`)
+  //   //   .getDownloadURL()
+  //   //   .then((resolve) => {
+  //   //     setUrl(resolve)
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     console.log(error)
+  //   //   })
+  // }
 
   return (
     <View style={styles.mainContainer}>
