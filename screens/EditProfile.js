@@ -1,41 +1,33 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, TouchableOpacity, ImageBackground, TextInput, StyleSheet } from 'react-native'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import Feather from 'react-native-vector-icons/Feather'
 import Animated from 'react-native-reanimated'
 import BottomSheet from 'reanimated-bottom-sheet'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
+import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import ProfileHeader from '../components/ProfilesHeader'
+import UserContext from '../context/UserContext'
 
 const EditProfile = ({ navigation }) => {
-  const [name, setName] = useState(auth.currentUser.displayName)
-  const [address, setAddress] = useState(auth.currentUser.address)
-  const [phone, setPhone] = useState(auth.currentUser.phoneNumber)
-  const [imageUrl, setImageUrl] = useState(auth?.currentUser?.photoURL)
+  const { currentUser, updateProfile } = useContext(UserContext)
+  const [name, setName] = useState(currentUser.displayName)
+  const [address, setAddress] = useState(currentUser.address)
+  const [phone, setPhone] = useState(currentUser.phoneNumber)
+  const [imageUrl, setImageUrl] = useState(currentUser.photoURL)
+  const [error, setError] = useState('')
 
-  const updateProfile = async () => {
-    await auth.currentUser
-      .updateProfile({
-        displayName: name,
-        photoURL: imageUrl,
-        address: address,
-        phoneNumber: phone,
-      })
-      .then(() => {
-        console.log('Update succesfull')
-        // Update successful
-        // ...
-      })
-      .catch((error) => {
-        console.log(error)
-        // An error occurred
-        // ...
-      })
+  const onClickUpdateProfile = async () => {
+    try {
+      await updateProfile(name, phone, address, imageUrl)
+      navigation.goBack()
+      console.log('Document successfully updated!')
+    } catch (error) {
+      setError(error)
+    }
   }
+
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -54,8 +46,7 @@ const EditProfile = ({ navigation }) => {
       }
     }
   }
-  console.log(auth.currentUser)
-  console.log(phone)
+
   const renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: 'center' }}>
@@ -119,7 +110,7 @@ const EditProfile = ({ navigation }) => {
                   }}
                 >
                   <ImageBackground
-                    source={{ uri: imageUrl }}
+                    source={{ uri: currentUser.photoURL }}
                     style={{ height: 140, width: 140 }}
                     imageStyle={{ borderRadius: 70 }}
                   >
@@ -149,44 +140,49 @@ const EditProfile = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
-          <Text style={{ marginTop: 40, fontSize: 18, fontWeight: 'bold' }}>John Doe</Text>
+          <Text style={{ marginTop: 40, fontSize: 18, fontWeight: 'bold' }}>
+            {currentUser?.displayName}
+          </Text>
         </View>
 
         <View style={styles.action}>
           <MaterialIcons name="person" size={25} color="black" />
           <TextInput
+            value={name}
             placeholder="Name"
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={styles.textInput}
-            onChangeText={(name) => setName(name)}
+            onChangeText={setName}
           />
         </View>
         <View style={styles.action}>
           <MaterialIcons name="phone" size={25} color="black" />
           <TextInput
+            value={phone}
             placeholder="Phone"
             placeholderTextColor="#666666"
             keyboardType="number-pad"
             autoCorrect={false}
             style={styles.textInput}
-            onChangeText={(newPhone) => setPhone(newPhone)}
+            onChangeText={setPhone}
           />
         </View>
         <View style={styles.action}>
           <MaterialIcons name="location-pin" size={20} />
           <TextInput
+            value={address}
             placeholder="Address"
             placeholderTextColor="#666666"
             autoCorrect={false}
             style={styles.textInput}
-            onChangeText={(newAddress) => setAddress(newAddress)}
+            onChangeText={setAddress}
           />
         </View>
-        <TouchableOpacity style={styles.commandButton} onPress={() => {}}>
-          <Text style={styles.panelButtonTitle} onPress={updateProfile}>
-            Submit
-          </Text>
+        <Text>{error}</Text>
+
+        <TouchableOpacity style={styles.commandButton} onPress={() => onClickUpdateProfile()}>
+          <Text style={styles.panelButtonTitle}>Submit</Text>
         </TouchableOpacity>
       </Animated.View>
     </View>

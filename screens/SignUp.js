@@ -9,6 +9,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { LinearGradient } from 'expo-linear-gradient'
 import GoogleButton from '../components/GoogleButton'
 import FacebookButton from '../components/FacebookButton'
+import UserContext from '../context/UserContext'
 
 const Signup = ({ navigation }) => {
   const [name, setName] = useState('')
@@ -18,44 +19,19 @@ const Signup = ({ navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
 
-  const register = () => {
-    if (password !== confirmPassword) {
-      setError(() => 'Passwords do not match')
-      return
-    } else {
-      auth
-        .createUserWithEmailAndPassword(email, password)
-        .then(async (authUser) => {
-          await authUser.user.updateProfile({
-            displayName: name,
-            photoURL:
-              imageUrl ||
-              'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-          })
-        })
-        .then(() => navigation.replace('Landing'))
-        .catch((error) => setError(error.message))
+  const { register, facebookLogIn } = useContext(UserContext)
 
-      auth.onAuthStateChanged((authUser) => {
-        if (authUser) {
-          db.collection('users')
-            .doc(authUser.uid)
-            .set({
-              displayName: name,
-              email: email,
-              createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-              photoURL:
-                imageUrl ||
-                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-              phoneNumber: null,
-              address: null,
-            })
-            .then(() => {
-              console.log('Document successfully written!')
-            })
-            .catch((error) => setError(error.message))
-        }
-      })
+  const onClickRegister = async () => {
+    try {
+      if (password !== confirmPassword) {
+        setError('Passwords do not match')
+        return
+      } else {
+        await register(name, email, password, imageUrl)
+        navigation.replace('Landing')
+      }
+    } catch (error) {
+      setError(error.message)
     }
   }
 
@@ -130,7 +106,11 @@ const Signup = ({ navigation }) => {
         </LinearGradient>
 
         {error ? <Text style={styles.error}>{error}</Text> : null}
-        <FormButton buttonTitle="Sign Up" backgroundColor="#114E85" onPress={register} />
+        <FormButton
+          buttonTitle="Sign Up"
+          backgroundColor="#114E85"
+          onPress={() => onClickRegister()}
+        />
 
         <View style={styles.textPrivate}>
           <Text style={styles.color_textPrivate}>
@@ -149,6 +129,7 @@ const Signup = ({ navigation }) => {
               buttonTitle="Sign Up with Facebook"
               color="white"
               backgroundColor="#1877F2"
+              onPress={() => facebookLogIn()}
             />
             <GoogleButton
               buttonTitle="Sign Up with Google"

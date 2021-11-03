@@ -1,17 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Share } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
+import UserContext from '../context/UserContext'
 
 const Profile = ({ navigation }) => {
-  const signOutUser = () => {
-    auth.signOut().then(() => {
-      navigation.replace('Landing')
-    })
-  }
+  const { signOutUser, currentUser } = useContext(UserContext)
 
   const myCustomShare = async () => {
     try {
@@ -32,8 +29,6 @@ const Profile = ({ navigation }) => {
     }
   }
 
-  console.log('TESTTTTTTTT:', auth.currentUser)
-
   return (
     <View style={styles.container}>
       <View style={styles.mainUserInfoSection}>
@@ -42,7 +37,7 @@ const Profile = ({ navigation }) => {
             rounded
             source={{
               uri:
-                auth?.currentUser?.photoURL ||
+                currentUser?.photoURL ||
                 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             }}
             size={80}
@@ -58,9 +53,9 @@ const Profile = ({ navigation }) => {
                 },
               ]}
             >
-              {auth?.currentUser?.displayName}
+              {currentUser?.displayName}
             </Text>
-            <Text style={styles.caption}>{auth?.currentUser?.email}</Text>
+            <Text style={styles.caption}>{currentUser?.email}</Text>
           </View>
         </View>
         <TouchableOpacity
@@ -79,20 +74,18 @@ const Profile = ({ navigation }) => {
         <View style={styles.row}>
           <Icon name="map-marker-radius" color="#A3B1B8" size={20} />
           <Text style={{ color: '#777777', marginLeft: 20 }}>
-            {auth?.currentUser?.address || 'Update your address in settings'}
+            {currentUser?.address || 'Update your address'}
           </Text>
         </View>
         <View style={styles.row}>
           <Icon name="phone" color="#A3B1B8" size={20} />
           <Text style={{ color: '#777777', marginLeft: 20 }}>
-            {auth?.currentUser?.phoneNumber
-              ? auth?.currentUser?.phoneNumber
-              : 'Update your phone in settings'}
+            {currentUser?.phoneNumber || 'Update your phone'}
           </Text>
         </View>
         <View style={styles.row}>
           <Icon name="email" color="#A3B1B8" size={20} />
-          <Text style={{ color: '#777777', marginLeft: 20 }}>{auth?.currentUser?.email}</Text>
+          <Text style={{ color: '#777777', marginLeft: 20 }}>{currentUser?.email}</Text>
         </View>
       </View>
       <View style={styles.infoBoxWrapper}>
@@ -138,7 +131,7 @@ const Profile = ({ navigation }) => {
             <Text style={styles.menuItemText}>Settings</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={signOutUser}>
+        <TouchableOpacity onPress={() => signOutUser(navigation)}>
           <View style={styles.menuItem}>
             <MaterialIcons name="logout" size={25} color="#2a7abf" />
             <Text style={styles.menuItemText}>Log Out</Text>

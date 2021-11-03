@@ -1,63 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Image, Platform, StyleSheet, ScrollView } from 'react-native'
 import FormInput from '../components/FormInput'
 import FormButton from '../components/FormButton'
-import { auth } from '../config/firebase'
+import { auth, db } from '../config/firebase'
 import * as Google from 'expo-google-app-auth'
 import { onSignIn } from '../config/GoogleAuth'
-import { checkLoginState } from '../config/FacebookAuth'
 import * as Facebook from 'expo-facebook'
 import firebase from 'firebase'
 import GoogleButton from '../components/GoogleButton'
 import FacebookButton from '../components/FacebookButton'
+import UserContext from '../context/UserContext'
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
   const [error, setError] = useState('')
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        navigation.replace('Landing')
-      }
-    })
+  const { login, facebookLogIn, currentUser } = useContext(UserContext)
 
-    return unsubscribe
-  }, [auth])
-
-  const Login = async () => {
-    try {
-      await auth
-        .signInWithEmailAndPassword(email, password)
-        .catch((error) => setError(error.message))
-    } catch (error) {
-      setError('Email and password are required to log in')
-    }
+  if (currentUser) {
+    navigation.replace('Landing')
   }
 
-  const facebookLogIn = async () => {
+  const onClickLogin = async () => {
     try {
-      await Facebook.initializeAsync({
-        appId: '870849203622017',
-      })
-
-      const { type, token, expirationDate, permissions, declinedPermissions } =
-        await Facebook.logInWithReadPermissionsAsync({
-          permissions: ['public_profile', 'email'],
-        })
-      if (type === 'success') {
-        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        const credential = firebase.auth.FacebookAuthProvider.credential(token)
-        const facebookProfileData = await firebase.auth().signInWithCredential(credential)
-        return Promise.resolve({ type: 'success' })
-        // checkLoginState(await response)
-      } else {
-        // type === 'cancel'
-        return Promise.reject({ type: 'cancel' })
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`)
+      await login(email, password)
+    } catch (error) {
+      setError('Email and password are required to log in')
     }
   }
 
@@ -77,7 +46,6 @@ const Login = ({ navigation }) => {
         return { cancelled: true }
       }
     } catch (e) {
-      console.log('error:', e)
       return { error: true }
     }
   }
@@ -104,7 +72,7 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
       />
       <Text>{error}</Text>
-      <FormButton buttonTitle="Log in" backgroundColor="#114E85" onPress={Login} />
+      <FormButton buttonTitle="Log in" backgroundColor="#114E85" onPress={() => onClickLogin()} />
 
       <TouchableOpacity
         style={styles.forgotButton}
@@ -119,7 +87,7 @@ const Login = ({ navigation }) => {
             buttonTitle="Continue with Facebook"
             color="white"
             backgroundColor="#1877F2"
-            onPress={facebookLogIn}
+            onPress={() => facebookLogIn()}
           />
           <GoogleButton
             buttonTitle="Continue with Google"
