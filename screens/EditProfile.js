@@ -4,28 +4,51 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import Animated from 'react-native-reanimated'
 import BottomSheet from 'reanimated-bottom-sheet'
-import { auth, db } from '../config/firebase'
+import { auth, db, storage } from '../config/firebase'
 import firebase from 'firebase'
 import * as ImagePicker from 'expo-image-picker'
 import ProfileHeader from '../components/ProfilesHeader'
 import UserContext from '../context/UserContext'
 
 const EditProfile = ({ navigation }) => {
-  const { currentUser, updateProfile } = useContext(UserContext)
+  const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
   const [name, setName] = useState(currentUser?.displayName)
   const [address, setAddress] = useState(currentUser?.address)
   const [phone, setPhone] = useState(currentUser?.phoneNumber)
   const [imageUrl, setImageUrl] = useState(currentUser?.photoURL)
+  // console.log('🚀 ~ file: EditProfile.js ~ line 19 ~ EditProfile ~ imageUrl', imageUrl)
   const [error, setError] = useState('')
+  const [url, setUrl] = useState('')
+  const [imagen, setImagen] = useState(null)
 
   const onClickUpdateProfile = async () => {
     try {
-      await updateProfile(name, phone, address, imageUrl)
+      await updateProfile(name, phone, address, url)
+      setCurrentUser((prevState) => ({
+        ...prevState,
+        photoURL: url,
+      }))
       navigation.goBack()
       console.log('Document successfully updated!')
     } catch (error) {
       setError(error)
     }
+  }
+
+  const uploadImage = (uri) => {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest()
+      xhr.onerror = reject
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          resolve(xhr.response)
+        }
+      }
+
+      xhr.open('GET', uri)
+      xhr.responseType = 'blob'
+      xhr.send()
+    })
   }
 
   const pickImage = async () => {
@@ -40,11 +63,45 @@ const EditProfile = ({ navigation }) => {
           aspect: [4, 3],
           quality: 1,
         })
+
         if (!result.cancelled) {
-          setImageUrl(result.uri)
+          const imageUri = result.uri
+          uploadImage(imageUri)
+            .then((resolve) => {
+              let ref = firebase
+                .storage()
+                .ref()
+                .child(`imageProfile/${currentUser?.email}/updatedProfilePicture`)
+              ref
+                .put(resolve)
+                .then(() => {
+                  loadImage()
+                  // console.log('Imagen subida correctamente')
+                })
+                .catch((error) => {
+                  console.log('Error al subir la imagen')
+                })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
         }
       }
     }
+  }
+
+  const loadImage = async () => {
+    storage
+      .ref()
+      .child(`imageProfile/${currentUser?.email}/updatedProfilePicture`)
+      .getDownloadURL()
+      .then((resolve) => {
+        console.log('Resolve:', resolve)
+        setUrl(resolve)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   const renderInner = () => (
@@ -110,7 +167,7 @@ const EditProfile = ({ navigation }) => {
                   }}
                 >
                   <ImageBackground
-                    source={{ uri: currentUser.photoURL }}
+                    source={url ? { uri: url } : { uri: currentUser?.photoURL }}
                     style={{ height: 140, width: 140 }}
                     imageStyle={{ borderRadius: 70 }}
                   >

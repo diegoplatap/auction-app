@@ -114,8 +114,8 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  const updateProfile = (name, phone, address, url) => {
-    const userRef = db.collection('users').doc(currentUser.userId)
+  const updateProfile = async (name, phone, address, url) => {
+    const userRef = await db.collection('users').doc(currentUser?.userId)
 
     return userRef.update({
       displayName: name || currentUser?.displayName,
