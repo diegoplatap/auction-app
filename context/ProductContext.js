@@ -67,7 +67,7 @@ export function ProductsContextContextProvider({ children }) {
             userName,
             photoURL,
             userPhotoURL,
-            id: userId,
+            id: doc.id,
           })
         })
         setProducts(() => products)

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Text, StyleSheet, View, FlatList, Button } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
-import ProductCard from '../components/Products/ProductCards'
+import ProductCard from '../components/Products/ProductCard'
 import CategoriesCard from '../components/Categories/CategoriesCard'
 import SearchBar from '../components/Search/SearchBar'
 import { db } from '../config/firebase'
@@ -10,57 +10,14 @@ import ProductsContext from '../context/ProductContext'
 
 const Explore = ({ navigation }) => {
   const { products } = useContext(ProductsContext)
-  // console.log('🚀 ~ file: Explore.js ~ line 13 ~ Explore ~ products', products)
+  console.log('🚀 ~ file: Explore.js ~ line 13 ~ Explore ~ products', products)
 
-  // const [products, setProducts] = useState(null)
   const [categories, setCategories] = useState([
     { id: '1', name: 'Electrodomesticos' },
     { id: '2', name: 'Tecnologia' },
     { id: '3', name: 'Musica' },
     { id: '4', name: 'NFT' },
   ])
-
-  // const loadProducts = async () => {
-  //   try {
-  //     await db.collection('products').onSnapshot((querySnapshot) => {
-  //       const products = []
-  //       querySnapshot.docs.forEach((doc) => {
-  //         const {
-  //           title,
-  //           category,
-  //           bidded,
-  //           condition,
-  //           description,
-  //           endDate,
-  //           highestBid,
-  //           userName,
-  //           photoURL,
-  //           userPhotoURL,
-  //         } = doc.data()
-  //         products.push({
-  //           title,
-  //           category,
-  //           bidded,
-  //           condition,
-  //           description,
-  //           endDate,
-  //           highestBid,
-  //           userName,
-  //           photoURL,
-  //           userPhotoURL,
-  //           id: doc.id,
-  //         })
-  //       })
-  //       setProducts(products)
-  //     })
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   loadProducts()
-  // }, [db])
 
   return (
     <View style={styles.container}>
