@@ -44,8 +44,6 @@ const AddProduct = ({ route, navigation }) => {
   const [value, setValue] = useState(null)
   const [error, setError] = useState('')
 
-  console.log('🚀 ~ file: AddProduct.js ~ line 28 ~ AddProduct ~ product', product)
-
   const onClickAddProducts = async () => {
     const {
       title,
@@ -74,6 +72,7 @@ const AddProduct = ({ route, navigation }) => {
         userPhotoURL,
         userId
       )
+      navigation.navigate('Landing')
     } catch (error) {
       setError(error.message)
     }
