@@ -6,10 +6,13 @@ import CategoriesCard from '../components/Categories/CategoriesCard'
 import SearchBar from '../components/Search/SearchBar'
 import { db } from '../config/firebase'
 import LottieView from 'lottie-react-native'
-import UserContext from '../context/UserContext'
+import ProductsContext from '../context/ProductContext'
 
 const Explore = ({ navigation }) => {
-  const [products, setProducts] = useState(null)
+  const { products } = useContext(ProductsContext)
+  // console.log('🚀 ~ file: Explore.js ~ line 13 ~ Explore ~ products', products)
+
+  // const [products, setProducts] = useState(null)
   const [categories, setCategories] = useState([
     { id: '1', name: 'Electrodomesticos' },
     { id: '2', name: 'Tecnologia' },
@@ -17,47 +20,47 @@ const Explore = ({ navigation }) => {
     { id: '4', name: 'NFT' },
   ])
 
-  const loadProducts = async () => {
-    try {
-      await db.collection('products').onSnapshot((querySnapshot) => {
-        const products = []
-        querySnapshot.docs.forEach((doc) => {
-          const {
-            title,
-            category,
-            bidded,
-            condition,
-            description,
-            endDate,
-            highestBid,
-            userName,
-            photoURL,
-            userPhotoURL,
-          } = doc.data()
-          products.push({
-            title,
-            category,
-            bidded,
-            condition,
-            description,
-            endDate,
-            highestBid,
-            userName,
-            photoURL,
-            userPhotoURL,
-            id: doc.id,
-          })
-        })
-        setProducts(products)
-      })
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const loadProducts = async () => {
+  //   try {
+  //     await db.collection('products').onSnapshot((querySnapshot) => {
+  //       const products = []
+  //       querySnapshot.docs.forEach((doc) => {
+  //         const {
+  //           title,
+  //           category,
+  //           bidded,
+  //           condition,
+  //           description,
+  //           endDate,
+  //           highestBid,
+  //           userName,
+  //           photoURL,
+  //           userPhotoURL,
+  //         } = doc.data()
+  //         products.push({
+  //           title,
+  //           category,
+  //           bidded,
+  //           condition,
+  //           description,
+  //           endDate,
+  //           highestBid,
+  //           userName,
+  //           photoURL,
+  //           userPhotoURL,
+  //           id: doc.id,
+  //         })
+  //       })
+  //       setProducts(products)
+  //     })
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
-  useEffect(() => {
-    loadProducts()
-  }, [db])
+  // useEffect(() => {
+  //   loadProducts()
+  // }, [db])
 
   return (
     <View style={styles.container}>

@@ -1,16 +1,32 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useContext, useRef, useState } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  ImageBackground,
+} from 'react-native'
 import CustomHeader from '../components/CustomHeader'
 import UserContext from '../context/UserContext'
+import ProductsContext from '../context/ProductContext'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { windowHeight } from '../utils/Dimentions'
 import { Picker } from '@react-native-picker/picker'
+import * as ImagePicker from 'expo-image-picker'
+import firebase from 'firebase'
+import { storage } from '../config/firebase'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import CurrencyInput from 'react-native-currency-input'
 
 const AddProduct = ({ route, navigation }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState()
   const { currentUser } = useContext(UserContext)
+  const { addProduct } = useContext(ProductsContext)
+  const [date, setDate] = useState(new Date(1598051730000))
+  const [mode, setMode] = useState('date')
+  const [show, setShow] = useState(false)
 
   const [product, setProduct] = useState({
     bidded: 0,
@@ -18,22 +34,201 @@ const AddProduct = ({ route, navigation }) => {
     condition: 'New',
     description: '',
     endDate: '',
-    highestBid: '',
+    highestBid: null,
     photoURL: '',
     title: '',
     userName: currentUser?.displayName,
     userId: currentUser?.userId,
     userPhotoURL: currentUser?.photoURL,
   })
+  const [value, setValue] = useState(null)
+  const [error, setError] = useState('')
+
+  console.log('🚀 ~ file: AddProduct.js ~ line 28 ~ AddProduct ~ product', product)
+
+  const onClickAddProducts = async () => {
+    const {
+      title,
+      category,
+      bidded,
+      condition,
+      description,
+      endDate,
+      highestBid,
+      userName,
+      photoURL,
+      userPhotoURL,
+      userId,
+    } = product
+    try {
+      addProduct(
+        title,
+        category,
+        bidded,
+        condition,
+        description,
+        endDate,
+        highestBid,
+        userName,
+        photoURL,
+        userPhotoURL,
+        userId
+      )
+    } catch (error) {
+      setError(error.message)
+    }
+  }
+
+  const uploadImage = (uri) => {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest()
+      xhr.onerror = reject
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          resolve(xhr.response)
+        }
+      }
+
+      xhr.open('GET', uri)
+      xhr.responseType = 'blob'
+      xhr.send()
+    })
+  }
+
+  const pickImage = async () => {
+    if (Platform.OS !== 'web') {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (status !== 'granted') {
+        alert('Permisson denied')
+      } else {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        })
+
+        if (!result.cancelled) {
+          const imageUri = result.uri
+          uploadImage(imageUri)
+            .then((resolve) => {
+              let ref = firebase
+                .storage()
+                .ref()
+                .child(`products/${currentUser.userId}/${product.title}`)
+              ref
+                .put(resolve)
+                .then(() => {
+                  loadImage()
+                  // console.log('Imagen subida correctamente')
+                })
+                .catch((error) => {
+                  console.log('Error al subir la imagen')
+                })
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+        }
+      }
+    }
+  }
+
+  const loadImage = async () => {
+    storage
+      .ref()
+      .child(`products/${currentUser.userId}/${product.title}`)
+      .getDownloadURL()
+      .then((resolve) => {
+        console.log('Resolve:', resolve)
+        setProduct((prevState) => ({
+          ...prevState,
+          photoURL: resolve,
+        }))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date
+    setShow(Platform.OS === 'ios')
+    setProduct((prevState) => ({
+      ...prevState,
+      endDate: currentDate,
+    }))
+  }
+
+  const showMode = (currentMode) => {
+    setShow(true)
+    setMode(currentMode)
+  }
+
+  const showDatepicker = () => {
+    showMode('date')
+  }
+
+  const showTimepicker = () => {
+    showMode('time')
+  }
 
   return (
     <View style={styles.container}>
       <CustomHeader navigation={navigation} title={'Add product'} />
-      <View>
-        <Image
-          source={{ uri: 'https://http2.mlstatic.com/D_NQ_NP_677988-MLA45993737435_052021-O.jpg' }}
-          style={styles.image}
-        />
+      <View style={{ alignItems: 'center', marginTop: 10 }}>
+        <TouchableOpacity onPress={pickImage}>
+          <View
+          // style={{
+          //   height: 130,
+          //   width: 130,
+          //   borderRadius: 50,
+          //   justifyContent: 'center',
+          //   alignItems: 'center',
+          // }}
+          >
+            <ImageBackground
+              source={{
+                uri: product.photoURL,
+              }}
+              style={{
+                height: 120,
+                width: 350,
+                backgroundColor: 'lightgray',
+                borderRadius: 20,
+              }}
+
+              // imageStyle={{ borderRadius: 70 }}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="image-edit-outline"
+                  size={35}
+                  color="#fff"
+                  style={{
+                    opacity: 0.7,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    borderRadius: 10,
+                  }}
+                />
+                {product.photoURL ? null : (
+                  <Text style={{ color: 'whitesmoke', fontWeight: '700' }}>
+                    Add a product image
+                  </Text>
+                )}
+              </View>
+            </ImageBackground>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
         <View>
@@ -119,29 +314,51 @@ const AddProduct = ({ route, navigation }) => {
               end={{ x: 1, y: 1 }}
               style={styles.buttonDate}
             >
-              <TouchableOpacity>
+              <TouchableOpacity onPress={showDatepicker}>
                 <Text style={styles.buttonTextDate}>{`Pick a date`}</Text>
               </TouchableOpacity>
             </LinearGradient>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                is24Hour={true}
+                display="default"
+                onChange={onChange}
+              />
+            )}
           </View>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 4,
+          }}
+        >
+          {product?.endDate ? (
+            <Text style={{ fontSize: 13 }}>{product.endDate.toString()}</Text>
+          ) : null}
         </View>
         <View>
           <CurrencyInput
-            onChangeValue={(value) =>
-              setProduct((prevState) => ({
-                ...prevState,
-                highestBid: value,
-              }))
-            }
+            value={value}
+            onChangeValue={setValue}
             prefix="$"
             delimiter="."
             separator=","
-            placeholder="$ Initial auction value "
+            placeholder="$ Initial auction value"
             style={styles.textInputCurrency}
-            // precision={2}
-            // onChangeText={(formattedValue) => {
-            //   console.log(formattedValue); // $2,310.46
-            // }}
+            precision={0}
+            onChangeText={(formattedValue) => {
+              setProduct((prevState) => ({
+                ...prevState,
+                highestBid: formattedValue,
+              }))
+              console.log(formattedValue) // $2,310.46
+            }}
           />
         </View>
       </View>
@@ -154,7 +371,7 @@ const AddProduct = ({ route, navigation }) => {
             end={{ x: 1, y: 1 }}
             style={styles.button}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onClickAddProducts()}>
               <Text style={styles.buttonText}>{`Add product`}</Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -276,7 +493,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   textInputCurrency: {
-    marginTop: 15,
+    marginTop: 10,
     width: '100%',
     height: windowHeight / 20,
     borderColor: '#ccc',
@@ -296,7 +513,7 @@ const styles = StyleSheet.create({
   textCategory: {
     color: '#666666',
     paddingLeft: 5,
-    marginBottom: 5,
+    marginBottom: 3,
     marginTop: 15,
     fontWeight: '700',
   },

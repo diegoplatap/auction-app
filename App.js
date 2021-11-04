@@ -10,6 +10,7 @@ import Signup from './screens/SignUp'
 import Product from './screens/Product'
 import EditProfile from './screens/EditProfile'
 import { UserContextProvider } from './context/UserContext'
+import { ProductsContextContextProvider } from './context/ProductContext'
 
 const Stack = createStackNavigator()
 
@@ -38,24 +39,30 @@ export default function App() {
 
   return (
     <UserContextProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName={routeName}>
-          <Stack.Screen name="Onboarding" options={{ headerShown: false }} component={OnBoarding} />
-          <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
-          <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
-          <Stack.Screen name="Product" options={{ headerShown: false }} component={Product} />
-          <Stack.Screen
-            name="EditProfile"
-            options={{ headerShown: false }}
-            component={EditProfile}
-          />
-          <Stack.Screen
-            name="Landing"
-            options={{ headerShown: false }}
-            component={BottomTabNavigator}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ProductsContextContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName={routeName}>
+            <Stack.Screen
+              name="Onboarding"
+              options={{ headerShown: false }}
+              component={OnBoarding}
+            />
+            <Stack.Screen name="Login" options={{ headerShown: false }} component={Login} />
+            <Stack.Screen name="Sign up" options={{ headerShown: false }} component={Signup} />
+            <Stack.Screen name="Product" options={{ headerShown: false }} component={Product} />
+            <Stack.Screen
+              name="EditProfile"
+              options={{ headerShown: false }}
+              component={EditProfile}
+            />
+            <Stack.Screen
+              name="Landing"
+              options={{ headerShown: false }}
+              component={BottomTabNavigator}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ProductsContextContextProvider>
     </UserContextProvider>
   )
 }
