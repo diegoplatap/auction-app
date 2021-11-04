@@ -7,11 +7,12 @@ import ProductHeader from '../components/ProductHeader'
 const Product = ({ route, navigation }) => {
   const { product } = route.params
 
-  console.log('🚀 ~ file: Product.js ~ line 7 ~ Product ~ product', product)
+  const { endDate } = product
+  console.log('🚀 ~ file: Product.js ~ line 11 ~ Product ~ endDate', endDate)
 
   return (
     <View style={styles.container}>
-      <ProductHeader navigation={navigation} title={'Auction ending in '} />
+      <ProductHeader navigation={navigation} title={'Auction ending in '} endDate={endDate} />
       <View>
         <Image source={{ uri: product.photoURL }} style={styles.image} />
       </View>

@@ -1,13 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { Avatar } from 'react-native-elements'
-import ProductsContext from '../../context/ProductContext'
 import Counter from './Counter'
 
 const ProductCard = (props) => {
-  const { products } = useContext(ProductsContext)
-
   const { photoURL, title, bidded, highestBid, userName, userPhotoURL, endDate } = props
 
   const goToProduct = () => {
@@ -53,7 +50,7 @@ const ProductCard = (props) => {
           </View>
           <View style={styles.footerCard}>
             <View style={styles.footerCardLeft}>
-              <Counter endDate={endDate} styles={styles} />
+              <Counter endDate={endDate} />
               <Text style={styles.footerTitles}>Auction Ending in</Text>
             </View>
             <View style={styles.footerCardRight}>

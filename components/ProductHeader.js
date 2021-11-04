@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
+import ProductsContext from '../context/ProductContext'
+import Counter from './Products/Counter'
 
-const ProductHeader = ({ navigation, title }) => {
+const ProductHeader = ({ navigation, title, endDate }) => {
+  // const { products } = useContext(ProductsContext)
+
   const goBack = () => {
     navigation.goBack()
   }
@@ -16,6 +20,7 @@ const ProductHeader = ({ navigation, title }) => {
       <View style={styles.centerMax}>
         <Text style={{ textAlign: 'center', fontSize: 20, color: '#24344C', fontWeight: 'bold' }}>
           {title}
+          <Counter endDate={endDate} />
         </Text>
       </View>
       {title === 'Explore' ? (
@@ -49,5 +54,10 @@ const styles = StyleSheet.create({
   centerMax: {
     flex: 1.5,
     justifyContent: 'center',
+  },
+  timer: {
+    color: '#24344C',
+    fontSize: 12,
+    fontWeight: '700',
   },
 })

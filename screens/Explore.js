@@ -13,10 +13,10 @@ const Explore = ({ navigation }) => {
   console.log('🚀 ~ file: Explore.js ~ line 13 ~ Explore ~ products', products)
 
   const [categories, setCategories] = useState([
-    { id: '1', name: 'Electrodomesticos' },
-    { id: '2', name: 'Tecnologia' },
-    { id: '3', name: 'Musica' },
-    { id: '4', name: 'NFT' },
+    { id: '1', name: 'Technology' },
+    { id: '2', name: 'Music' },
+    { id: '3', name: 'Art' },
+    { id: '4', name: "NFT'S" },
   ])
 
   return (
