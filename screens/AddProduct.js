@@ -283,7 +283,7 @@ const AddProduct = ({ route, navigation }) => {
         <View style={styles.picker}>
           <Picker
             style={styles.picker}
-            selectedValue={product.category}
+            selectedValue={product.condition}
             onValueChange={(itemValue, itemIndex) =>
               setProduct((prevState) => ({
                 ...prevState,

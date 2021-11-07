@@ -13,33 +13,34 @@ const OnBoarding = ({ navigation }) => {
           backgroundColor: '#fff',
           image: (
             <LottieView
-              source={require('../assets/images/onBoard1.json')}
+              source={require('../assets/images/onBoardnumber1.json')}
               style={{
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
               }}
               autoPlay
               loop
             />
           ),
-          title: 'Welcome to xxx',
-          subtitle: 'Done with React Native Onboarding Swiper!',
+          title: 'Welcome to HandSell',
+          subtitle: `The first auction app in Colombia! 🚀`,
         },
         {
           backgroundColor: '#fff',
           image: (
             <LottieView
-              source={require('../assets/images/onBoard2.json')}
+              source={require('../assets/images/onBoardnumber2.json')}
               style={{
-                width: 300,
-                height: 300,
+                width: 250,
+                height: 250,
               }}
               autoPlay
               loop
             />
           ),
-          title: 'Onboarding 2',
-          subtitle: 'Done with React Native Onboarding Swiper12',
+          title: 'HandSell is a win-win App',
+          subtitle: `Create and participate in auctions 
+        of your interest 🤑 `,
         },
       ]}
     />

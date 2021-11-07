@@ -52,7 +52,7 @@ const Login = ({ navigation }) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={require('../assets/logo-standard.png')} style={styles.logo} />
+      <Image source={require('../assets/images/HandSell-LOGO.png')} style={styles.logo} />
 
       <FormInput
         labelValue={email}
@@ -126,8 +126,8 @@ const styles = StyleSheet.create({
     // paddingTop: 0,
   },
   logo: {
-    height: 60,
-    width: 200,
+    height: 90,
+    width: 140,
     resizeMode: 'cover',
     marginBottom: 20,
   },
