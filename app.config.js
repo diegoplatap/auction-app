@@ -8,7 +8,7 @@ export default {
     orientation: 'portrait',
     icon: './assets/icon.png',
     splash: {
-      image: './assets/images/HandSell-splash.png',
+      image: './assets/images/SplashLogo.png',
       resizeMode: 'contain',
       backgroundColor: '#114e85',
     },
