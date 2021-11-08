@@ -113,7 +113,7 @@ const Profile = ({ navigation }) => {
             <Text style={styles.menuItemText}>Your Favorites</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => navigation.navigate('AddPayments')}>
           <View style={styles.menuItem}>
             <MaterialIcons name="credit-card" size={25} color="#2a7abf" />
             <Text style={styles.menuItemText}>Payments</Text>

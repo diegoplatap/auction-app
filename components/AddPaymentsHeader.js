@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
-const ProfileHeader = ({ navigation, title }) => {
+const AddPaymentsHeader = ({ navigation, title }) => {
   const goBack = () => {
     navigation.goBack()
   }
@@ -31,7 +31,7 @@ const ProfileHeader = ({ navigation, title }) => {
   )
 }
 
-export default ProfileHeader
+export default AddPaymentsHeader
 
 const styles = StyleSheet.create({
   container: {
@@ -46,5 +46,10 @@ const styles = StyleSheet.create({
   centerMax: {
     flex: 1.5,
     justifyContent: 'center',
+  },
+  timer: {
+    color: '#24344C',
+    fontSize: 12,
+    fontWeight: '700',
   },
 })

@@ -15,6 +15,6 @@ var preference = {
   ],
 }
 
-mercadopago.preferences.create(preference)
+// mercadopago.preferences.create(preference)
 
 export default mercadoPago
