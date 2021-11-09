@@ -15,7 +15,7 @@ const AddPaymentMethods = ({ navigation }) => {
   const [error, setError] = useState('')
   const [card, setCard] = useState({
     cardNumber: '',
-    email: 'ira0034@gmail.com',
+    email: email,
     cardholder: {
       name: '',
     },
@@ -25,12 +25,8 @@ const AddPaymentMethods = ({ navigation }) => {
   })
 
   const [userData, setUserData] = useState({
-    email: 'ira0034@gmail.com',
+    email: email,
     first_name: displayName,
-  })
-
-  const [tokenCard, setTokenCard] = useState({
-    token: '',
   })
 
   const handleInputChange = (form) => {
@@ -52,7 +48,7 @@ const AddPaymentMethods = ({ navigation }) => {
   const createUserMercadoPago = async () => {
     try {
       let user
-      user = await axios.get(`/v1/customers/search?email=ira0034@gmail.com`)
+      user = await axios.get(`/v1/customers/search?email=${email}`)
       console.log('test')
       if (user.data.results.length === 0) {
         user = await axios.post('/v1/customers', userData)
@@ -61,7 +57,8 @@ const AddPaymentMethods = ({ navigation }) => {
           ...prevState,
           mercadoPagoUserId: mercadoPagoUserId,
         }))
-
+      }
+      if (user) {
         const cardTokenGenerate = await axios.post(`/v1/card_tokens`, card)
         const token = cardTokenGenerate.data.id
         const saveCardResponse = await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {

@@ -2,11 +2,25 @@ import React from 'react'
 import { StyleSheet, Text, View, Image } from 'react-native'
 
 const CreditCard = (props) => {
+  const {
+    cardholder: { name },
+  } = props
+  const cardFranchise = props.issuer.name
+  const { last_four_digits, expiration_year, expiration_month } = props
   const visa = require('../assets/images/Visa.png')
   const masterCard = require('../assets/images/MasterCard.png')
+  const americanExpress = require('../assets/images/american.png')
+
   const franchise =
-    props.cardFranchise === 'Visa' ? visa : props.cardFranchise === 'Mastercard' ? masterCard : null
-  const bgColor = props.cardFranchise === 'Visa' ? '#114e85' : '#db2c40'
+    cardFranchise === 'Visa'
+      ? visa
+      : cardFranchise === 'Mastercard'
+      ? masterCard
+      : cardFranchise === 'American Express'
+      ? americanExpress
+      : null
+  const bgColor =
+    cardFranchise === 'Visa' ? '#114e85' : cardFranchise === 'Mastercard' ? '#db2c40' : '#6cc4ee'
   return (
     <View style={styles.myCardsContainer}>
       <View style={[styles.container, { backgroundColor: bgColor }]}>
@@ -34,11 +48,11 @@ const CreditCard = (props) => {
             <View style={styles.dot} />
             <View style={styles.dot} />
           </View>
-          <Text style={styles.text}>{props.lastFourDigits}</Text>
+          <Text style={styles.text}>{last_four_digits}</Text>
         </View>
         <View style={styles.footerContainer}>
-          <Text style={styles.text}>{props.name}</Text>
-          <Text style={styles.text}>{`${props.expirationMonth}/${props.expirationYear}`}</Text>
+          <Text style={styles.text}>{name}</Text>
+          <Text style={styles.text}>{`${expiration_month}/${expiration_year}`}</Text>
         </View>
       </View>
     </View>

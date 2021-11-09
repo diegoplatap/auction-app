@@ -13,28 +13,13 @@ const Wallet = ({ navigation }) => {
 
   useEffect(() => {
     loadCardsFromUser()
-  }, [])
+  }, [currentUser])
 
   const loadCardsFromUser = async () => {
     try {
       const cardsInfo = await axios.get(`v1/customers/${mercadoPagoUserId}/cards`)
 
-      const data = cardsInfo.data.map((el) => {
-        const {
-          cardholder: { name },
-        } = el
-        setLoadedCards((prevState) => [
-          ...prevState,
-          {
-            id: el.id,
-            name: name,
-            cardFranchise: el.issuer.name,
-            lastFourDigits: el.last_four_digits,
-            expirationYear: el.expiration_year,
-            expirationMonth: el.expiration_month,
-          },
-        ])
-      })
+      setLoadedCards(cardsInfo.data)
     } catch (error) {
       console.log(error.message)
     }
