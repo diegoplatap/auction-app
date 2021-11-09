@@ -21,7 +21,7 @@ const ProductHeader = ({ navigation, title, endDate }) => {
         <Text
           style={{
             textAlign: 'center',
-            fontSize: 15,
+            fontSize: 14,
             color: '#63666A',
           }}
         >

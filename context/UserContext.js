@@ -32,6 +32,7 @@ export function UserContextProvider({ children }) {
               'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             phoneNumber: '',
             address: '',
+            mercadoPagoUserId: '',
           })
           .then(() => {
             setCurrentUser(authUser)
@@ -114,7 +115,7 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  const updateProfile = async ({ name, phone, address, url, mercadoPagoUserId }) => {
+  const updateProfile = async ({ name, phone, address, url, mercadoPagoUserId, token }) => {
     const userRef = await db.collection('users').doc(currentUser?.userId)
 
     return userRef.update({
@@ -124,6 +125,7 @@ export function UserContextProvider({ children }) {
       photoURL: url || currentUser?.photoURL,
       updateDate: firebase.firestore.FieldValue.serverTimestamp(),
       mercadoPagoUserId: mercadoPagoUserId || null,
+      cardTokens: token || null,
     })
   }
 

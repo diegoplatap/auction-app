@@ -26,10 +26,10 @@ const AddPaymentsHeader = ({ navigation, title }) => {
         </View>
       ) : title === 'Wallet' ? (
         <View style={styles.center}>
-          <View style={{ marginLeft: 60, marginTop: 5 }}>
+          <View style={{ marginLeft: 50, marginTop: 6 }}>
             <MaterialIcons
               name="add-circle"
-              size={32}
+              size={38}
               color="#24344C"
               onPress={() => navigation.navigate('AddPayments')}
             />

@@ -6,7 +6,7 @@ import { windowHeight } from '../utils/Dimentions'
 import axios from '../utils/axios'
 import UserContext from '../context/UserContext'
 import { CreditCardInput } from 'react-native-input-credit-card'
-import CreditCards from '../components/CreditCards'
+import CreditCards from '../components/CreditCard'
 
 const AddPaymentMethods = ({ navigation }) => {
   const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
@@ -15,7 +15,7 @@ const AddPaymentMethods = ({ navigation }) => {
   const [error, setError] = useState('')
   const [card, setCard] = useState({
     cardNumber: '',
-    email: email,
+    email: 'ira0034@gmail.com',
     cardholder: {
       name: '',
     },
@@ -24,9 +24,13 @@ const AddPaymentMethods = ({ navigation }) => {
     securityCode: '',
   })
 
-  const [user, setUserData] = useState({
-    email: 'pepito12@gmail.com',
+  const [userData, setUserData] = useState({
+    email: 'ira0034@gmail.com',
     first_name: displayName,
+  })
+
+  const [tokenCard, setTokenCard] = useState({
+    token: '',
   })
 
   const handleInputChange = (form) => {
@@ -39,28 +43,32 @@ const AddPaymentMethods = ({ navigation }) => {
       cardholder: {
         name: name,
       },
-      expirationYear: expiry.slice(3, 6),
+      expirationYear: 20 + expiry.slice(3, 6),
       expirationMonth: expiry.slice(0, 2),
       securityCode: cvc,
     }))
   }
 
-  useEffect(() => {
-    createUserMercadoPago()
-  }, [])
-
   const createUserMercadoPago = async () => {
     try {
       let user
-      user = await axios.get(`/v1/customers/search?email=${email}`)
+      user = await axios.get(`/v1/customers/search?email=ira0034@gmail.com`)
+      console.log('test')
       if (user.data.results.length === 0) {
-        user = await axios.post('/v1/customers', user)
+        user = await axios.post('/v1/customers', userData)
         const mercadoPagoUserId = user.data.id
-        await updateProfile({ mercadoPagoUserId })
         setCurrentUser((prevState) => ({
           ...prevState,
           mercadoPagoUserId: mercadoPagoUserId,
         }))
+
+        const cardTokenGenerate = await axios.post(`/v1/card_tokens`, card)
+        const token = cardTokenGenerate.data.id
+        const saveCardResponse = await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {
+          token: token,
+        })
+        await updateProfile({ mercadoPagoUserId, token })
+        navigation.navigate('Wallet')
       } else {
         return
       }
@@ -68,10 +76,6 @@ const AddPaymentMethods = ({ navigation }) => {
       console.log(error.message)
       setError(() => 'The user already exist')
     }
-  }
-
-  const createCardToken = async () => {
-    const cardToken = await axios.post('/v1/card_tokens', card)
   }
 
   return (
@@ -86,7 +90,7 @@ const AddPaymentMethods = ({ navigation }) => {
           end={{ x: 1, y: 1 }}
           style={styles.button}
         >
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => createUserMercadoPago()}>
             <Text style={styles.buttonText}>{`Add Card`}</Text>
           </TouchableOpacity>
         </LinearGradient>

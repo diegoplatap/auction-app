@@ -19,6 +19,7 @@ const EditProfile = ({ navigation }) => {
   const [error, setError] = useState('')
   const [url, setUrl] = useState('')
 
+  console.log('Name:', name)
   const onClickUpdateProfile = async () => {
     try {
       await updateProfile({ name, phone, address, url })
@@ -29,6 +30,7 @@ const EditProfile = ({ navigation }) => {
       navigation.goBack()
       console.log('Document successfully updated!')
     } catch (error) {
+      console.log(error.message)
       setError(error)
     }
   }

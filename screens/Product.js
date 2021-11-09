@@ -1,14 +1,21 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import ProductHeader from '../components/ProductHeader'
+import UserContext from '../context/UserContext'
 
 const Product = ({ route, navigation }) => {
   const { product } = route.params
-
+  const { currentUser } = useContext(UserContext)
+  const haveCreditCard = currentUser.mercadoPagoUserId
   const { endDate } = product
-  console.log('🚀 ~ file: Product.js ~ line 11 ~ Product ~ endDate', endDate)
+
+  const placeAbid = () => {
+    if (!haveCreditCard) {
+      navigation.navigate('Login')
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -47,7 +54,7 @@ const Product = ({ route, navigation }) => {
             end={{ x: 1, y: 1 }}
             style={styles.button}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => placeAbid()}>
               <Text style={styles.buttonText}>{`Place a Bid      |     ${
                 product.highestBid + 1
               } `}</Text>
