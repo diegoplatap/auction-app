@@ -18,10 +18,16 @@ const ProductHeader = ({ navigation, title, endDate }) => {
         </View>
       </View>
       <View style={styles.centerMax}>
-        <Text style={{ textAlign: 'center', fontSize: 20, color: '#24344C', fontWeight: 'bold' }}>
+        <Text
+          style={{
+            textAlign: 'center',
+            fontSize: 15,
+            color: '#63666A',
+          }}
+        >
           {title}
-          <Counter endDate={endDate} />
         </Text>
+        <Counter endDate={endDate} screen="products" />
       </View>
       {title === 'Explore' ? (
         <View style={styles.center}>
@@ -52,7 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   centerMax: {
-    flex: 1.5,
+    flex: 1.1,
     justifyContent: 'center',
   },
   timer: {

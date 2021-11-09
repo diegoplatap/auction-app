@@ -133,8 +133,24 @@ export function UserContextProvider({ children }) {
         db.collection('users')
           .doc(auth.currentUser.uid)
           .onSnapshot((doc) => {
-            const { displayName, email, phoneNumber, address, photoURL, userId } = doc.data()
-            const user = { displayName, email, phoneNumber, address, photoURL, userId }
+            const {
+              displayName,
+              email,
+              phoneNumber,
+              address,
+              photoURL,
+              userId,
+              mercadoPagoUserId,
+            } = doc.data()
+            const user = {
+              displayName,
+              email,
+              phoneNumber,
+              address,
+              photoURL,
+              userId,
+              mercadoPagoUserId,
+            }
             setCurrentUser(user)
           })
       }

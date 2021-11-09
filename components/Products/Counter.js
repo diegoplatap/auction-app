@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import intervalToDuration from 'date-fns/intervalToDuration'
 
-const Counter = ({ endDate }) => {
+const Counter = ({ endDate, screen }) => {
   const [counter, setCounter] = useState({
     days: '',
     hours: '',
@@ -27,7 +27,7 @@ const Counter = ({ endDate }) => {
 
   return (
     <Text
-      style={styles.timer}
+      style={screen === 'products' ? styles.timerProducts : styles.timer}
     >{`${counter.days}d ${counter.hours}h ${counter.minutes}m ${counter.seconds}s`}</Text>
   )
 }
@@ -39,5 +39,11 @@ const styles = StyleSheet.create({
     color: '#24344C',
     fontSize: 12,
     fontWeight: '700',
+  },
+  timerProducts: {
+    color: '#24344C',
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
   },
 })

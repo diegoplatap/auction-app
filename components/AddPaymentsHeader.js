@@ -24,6 +24,17 @@ const AddPaymentsHeader = ({ navigation, title }) => {
             <MaterialIcons name="notifications-active" size={26} color="#A3B1B8" />
           </View>
         </View>
+      ) : title === 'Wallet' ? (
+        <View style={styles.center}>
+          <View style={{ marginLeft: 60, marginTop: 5 }}>
+            <MaterialIcons
+              name="add-circle"
+              size={32}
+              color="#24344C"
+              onPress={() => navigation.navigate('AddPayments')}
+            />
+          </View>
+        </View>
       ) : (
         <View style={{ flex: 1 }}></View>
       )}
@@ -51,5 +62,8 @@ const styles = StyleSheet.create({
     color: '#24344C',
     fontSize: 12,
     fontWeight: '700',
+  },
+  addCreditCards: {
+    // marginLeft: 65,
   },
 })

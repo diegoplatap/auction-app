@@ -9,6 +9,7 @@ import Profile from '../screens/Profile'
 import EditProfile from '../screens/EditProfile'
 import ResetPassword from '../screens/ResetPassword'
 import AddPaymentMethods from '../screens/AddPaymentMethods'
+import MyCards from '../screens/MyCards'
 
 const Stack = createStackNavigator()
 
@@ -29,6 +30,7 @@ const ExploreStackNavigator = ({ navigation, route }) => {
       {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="AddPayments" component={AddPaymentMethods} />
+      <Stack.Screen name="Wallet" component={MyCards} />
     </Stack.Navigator>
   )
 }
@@ -41,6 +43,7 @@ const AddProductsStackNavigator = ({ navigation }) => {
       {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="AddPayments" component={AddPaymentMethods} />
+      <Stack.Screen name="Wallet" component={MyCards} />
     </Stack.Navigator>
   )
 }
@@ -52,6 +55,7 @@ const BookmarksStackNavigator = ({ navigation }) => {
       {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="AddPayments" component={AddPaymentMethods} />
+      <Stack.Screen name="Wallet" component={MyCards} />
     </Stack.Navigator>
   )
 }
@@ -63,6 +67,7 @@ const SettingsStackNavigator = ({ navigation }) => {
       {/* <Stack.Screen name="EditProfile" component={EditProfile} /> */}
       <Stack.Screen name="ResetPassword" component={ResetPassword} />
       <Stack.Screen name="AddPayments" component={AddPaymentMethods} />
+      <Stack.Screen name="Wallet" component={MyCards} />
     </Stack.Navigator>
   )
 }

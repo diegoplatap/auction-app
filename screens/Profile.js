@@ -113,10 +113,10 @@ const Profile = ({ navigation }) => {
             <Text style={styles.menuItemText}>Your Favorites</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('AddPayments')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
           <View style={styles.menuItem}>
             <MaterialIcons name="credit-card" size={25} color="#2a7abf" />
-            <Text style={styles.menuItemText}>Payments</Text>
+            <Text style={styles.menuItemText}>Wallet</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={myCustomShare}>
