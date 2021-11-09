@@ -50,7 +50,7 @@ const AddPaymentMethods = ({ navigation }) => {
   const createUserMercadoPago = async () => {
     try {
       let user
-      user = await axios.get(`/v1/customers/search?email=imposibleestecorreo123@vamos.com`)
+      user = await axios.get(`/v1/customers/search?email=${email}`)
       if (user.data.results.length === 0) {
         user = await axios.post('/v1/customers', user)
         const mercadoPagoUserId = user.data.id
