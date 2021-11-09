@@ -1,6 +1,6 @@
 import mercadopago from 'mercadopago'
 
-const mercadoPago = mercadopago.configure({
+const mp = mercadopago.configure({
   access_token: 'TEST-495169915425704-110421-1afc7c29c221de8f6f398bdf27b3f3b7-95489948',
 })
 
@@ -15,6 +15,6 @@ var preference = {
   ],
 }
 
-// mercadopago.preferences.create(preference)
+mercadopago.preferences.create(preference)
 
-export default mercadoPago
+export default mp

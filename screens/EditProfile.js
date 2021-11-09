@@ -21,7 +21,7 @@ const EditProfile = ({ navigation }) => {
 
   const onClickUpdateProfile = async () => {
     try {
-      await updateProfile(name, phone, address, url)
+      await updateProfile({ name, phone, address, url })
       setCurrentUser((prevState) => ({
         ...prevState,
         photoURL: url,

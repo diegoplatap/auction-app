@@ -34,6 +34,7 @@
     "react-native-currency-input": "^1.0.1",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-input-credit-card": "^0.5.5",
     "react-native-onboarding-swiper": "^1.1.4",
     "react-native-reanimated": "~2.2.0",
     "react-native-safe-area-context": "3.2.0",

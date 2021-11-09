@@ -114,7 +114,7 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  const updateProfile = async (name, phone, address, url) => {
+  const updateProfile = async ({ name, phone, address, url, mercadoPagoUserId }) => {
     const userRef = await db.collection('users').doc(currentUser?.userId)
 
     return userRef.update({
@@ -123,6 +123,7 @@ export function UserContextProvider({ children }) {
       address: address || currentUser?.address,
       photoURL: url || currentUser?.photoURL,
       updateDate: firebase.firestore.FieldValue.serverTimestamp(),
+      mercadoPagoUserId: mercadoPagoUserId || null,
     })
   }
 
