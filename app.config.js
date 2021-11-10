@@ -7,6 +7,7 @@ export default {
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
+    userInterfaceStyle: 'automatic',
     splash: {
       image: './assets/images/SplashLogo.png',
       resizeMode: 'contain',
@@ -28,6 +29,7 @@ export default {
     web: {
       favicon: './assets/favicon.png',
     },
+
     extra: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.AUTH_DOMAIN,

@@ -18,15 +18,15 @@ import { Picker } from '@react-native-picker/picker'
 import * as ImagePicker from 'expo-image-picker'
 import firebase from 'firebase'
 import { storage } from '../config/firebase'
-import DateTimePicker from '@react-native-community/datetimepicker'
+// import DateTimePicker from '@react-native-community/datetimepicker'
 import CurrencyInput from 'react-native-currency-input'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 const AddProduct = ({ route, navigation }) => {
   const { currentUser } = useContext(UserContext)
   const { addProduct } = useContext(ProductsContext)
-  const [date, setDate] = useState(new Date(1598051730000))
-  const [mode, setMode] = useState('date')
-  const [show, setShow] = useState(false)
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
 
   const [product, setProduct] = useState({
     bidded: 0,
@@ -43,6 +43,22 @@ const AddProduct = ({ route, navigation }) => {
   })
   const [value, setValue] = useState(null)
   const [error, setError] = useState('')
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true)
+  }
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false)
+  }
+
+  const onChange = (date) => {
+    setProduct((prevState) => ({
+      ...prevState,
+      endDate: date,
+    }))
+    hideDatePicker()
+  }
 
   const onClickAddProducts = async () => {
     const {
@@ -150,28 +166,6 @@ const AddProduct = ({ route, navigation }) => {
       })
   }
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date
-    setShow(Platform.OS === 'ios')
-    setProduct((prevState) => ({
-      ...prevState,
-      endDate: currentDate,
-    }))
-  }
-
-  const showMode = (currentMode) => {
-    setShow(true)
-    setMode(currentMode)
-  }
-
-  const showDatepicker = () => {
-    showMode('date')
-  }
-
-  const showTimepicker = () => {
-    showMode('time')
-  }
-
   return (
     <View style={styles.container}>
       <CustomHeader navigation={navigation} title={'Add product'} />
@@ -188,7 +182,7 @@ const AddProduct = ({ route, navigation }) => {
           >
             <ImageBackground
               source={{
-                uri: product.photoURL,
+                uri: product.photoURL || null,
               }}
               style={{
                 height: 120,
@@ -196,8 +190,6 @@ const AddProduct = ({ route, navigation }) => {
                 backgroundColor: 'lightgray',
                 borderRadius: 20,
               }}
-
-              // imageStyle={{ borderRadius: 70 }}
             >
               <View
                 style={{
@@ -313,20 +305,16 @@ const AddProduct = ({ route, navigation }) => {
               end={{ x: 1, y: 1 }}
               style={styles.buttonDate}
             >
-              <TouchableOpacity onPress={showDatepicker}>
+              <TouchableOpacity onPress={showDatePicker}>
                 <Text style={styles.buttonTextDate}>{`Pick a date`}</Text>
               </TouchableOpacity>
             </LinearGradient>
-            {show && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-              />
-            )}
+            <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="datetime"
+              onConfirm={onChange}
+              onCancel={hideDatePicker}
+            />
           </View>
         </View>
         <View
@@ -356,7 +344,6 @@ const AddProduct = ({ route, navigation }) => {
                 ...prevState,
                 highestBid: formattedValue,
               }))
-              console.log(formattedValue) // $2,310.46
             }}
           />
         </View>
@@ -449,7 +436,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 120,
   },
   dateContainer: {
-    paddingHorizontal: 20,
+    // paddingHorizontal: 20,
+    // flexDirection: 'row',
     // marginBottom: 10,
   },
   button: {
@@ -461,7 +449,8 @@ const styles = StyleSheet.create({
     elevation: 8,
     borderRadius: 12,
     paddingVertical: 8,
-    paddingHorizontal: 25,
+    paddingHorizontal: 13,
+    marginLeft: 10,
   },
   buttonText: {
     color: '#fff',
@@ -473,7 +462,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     fontSize: 14,
-    // padding: 3,
   },
   inputContainer: {
     padding: 20,
