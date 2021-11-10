@@ -1,50 +1,133 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useContext } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import ProductHeader from '../components/ProductHeader'
+import { windowHeight } from '../utils/Dimentions'
+import CurrencyInput from 'react-native-currency-input'
+import ProductsContext from '../context/ProductContext'
 import UserContext from '../context/UserContext'
+import { db } from '../config/firebase'
 
 const Product = ({ route, navigation }) => {
-  const { product } = route.params
+  const { products } = useContext(ProductsContext)
+
   const { currentUser } = useContext(UserContext)
-  const haveCreditCard = currentUser.mercadoPagoUserId
+  const { product } = route.params
+
+  const [value, setValue] = useState(null)
+  const [highestBid, SetHighestBid] = useState('')
+  const [bid, SetBid] = useState({ value: '' })
   const { endDate } = product
 
-  const placeAbid = () => {
-    if (!haveCreditCard) {
-      navigation.navigate('Login')
+  const highestBidToNumber = product.highestBid.slice(1).replace(/\./g, '')
+  const highBidUserId = currentUser.userId
+  const highBidMercadoPagoUserId = currentUser.mercadoPagoUserId
+  const highBidUserToken = currentUser.cardTokens
+  const bidded = parseInt(product.bidded) + 1
+
+  const updateProductForBid = async ({
+    bidded,
+    highestBid,
+    highBidUserId,
+    highBidMercadoPagoUserId,
+    highBidUserToken,
+  }) => {
+    const userRef = await db.collection('products').doc(product?.userId)
+
+    return userRef.update({
+      bidded: bidded,
+      highestBid: highestBid,
+      highBidUserId: highBidUserId,
+      highBidMercadoPagoUserId: highBidMercadoPagoUserId,
+      highBidUserToken: highBidUserToken,
+    })
+  }
+
+  const placeAbid = async () => {
+    try {
+      if (currentUser === undefined) {
+        setTimeout(() => {
+          navigation.navigate('Login')
+        }, 2000)
+        Alert.alert('Please login')
+      } else if (currentUser.mercadoPagoUserId === null || currentUser.mercadoPagoUserId === '') {
+        setTimeout(() => {
+          navigation.navigate('Wallet')
+        }, 2000)
+        Alert.alert('Please add a credit card')
+      } else if (value === null) {
+        Alert.alert('Please provide a value')
+      } else if (value <= highestBidToNumber) {
+        Alert.alert('The bid needs to be higher than current highest bid')
+      } else {
+        await updateProductForBid({
+          bidded,
+          highestBid,
+          highBidUserId,
+          highBidMercadoPagoUserId,
+          highBidUserToken,
+        })
+        Alert.alert(`Awesome! Hope you get ${product.title}`)
+      }
+      navigation.navigate('Home')
+    } catch (error) {
+      console.log('Este es el error:', error)
     }
   }
 
   return (
     <View style={styles.container}>
-      <ProductHeader navigation={navigation} title={'Auction ending in '} endDate={endDate} />
+      <ProductHeader navigation={navigation} title={'Auction ending in'} endDate={endDate} />
       <View>
         <Image source={{ uri: product.photoURL }} style={styles.image} />
       </View>
       <Text style={styles.title}>{product.title}</Text>
       <View style={styles.userInfo}>
         <View style={styles.avatarName}>
-          <Avatar
-            size={28}
-            rounded
-            source={{
-              uri:
-                product.userPhotoURL ||
-                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-            }}
-          />
-          <Text style={styles.userName}>{product.userName}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Avatar
+              size={28}
+              rounded
+              source={{
+                uri:
+                  product.userPhotoURL ||
+                  'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+              }}
+            />
+            <Text style={styles.userName}>{product.userName}</Text>
+          </View>
         </View>
         <View style={styles.highestBid}>
           <Text style={styles.userName}>Highest Bid</Text>
           <Text style={styles.highestBidValue}>{product.highestBid}</Text>
         </View>
       </View>
-      <Text style={styles.description}>Description</Text>
-      <View style={styles.productInfo}>
-        <Text style={styles.productDescription}>{product.description}</Text>
+      <View style={{ marginBottom: 10 }}>
+        <Text style={styles.description}>Description</Text>
+        <View style={styles.productInfo}>
+          <Text style={styles.productDescription}>{product.description}</Text>
+        </View>
+      </View>
+      <View style={styles.bidInput}>
+        <CurrencyInput
+          value={value}
+          onChangeValue={setValue}
+          prefix="$"
+          delimiter="."
+          separator=","
+          placeholder="$ Please enter your bid"
+          style={styles.textInputCurrency}
+          precision={0}
+          onChangeText={(formattedValue) => {
+            SetBid((prevState) => ({
+              ...prevState,
+              value: formattedValue,
+            }))
+            SetHighestBid(formattedValue)
+            // console.log(formattedValue) // $2,310.46
+          }}
+        />
       </View>
       <View>
         <View style={styles.buttonContainer}>
@@ -55,8 +138,8 @@ const Product = ({ route, navigation }) => {
             style={styles.button}
           >
             <TouchableOpacity onPress={() => placeAbid()}>
-              <Text style={styles.buttonText}>{`Place a Bid      |     ${
-                product.highestBid + 1
+              <Text style={styles.buttonText}>{`Place a Bid      |      ${
+                bid?.value || product.highestBid
               } `}</Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -104,7 +187,7 @@ const styles = StyleSheet.create({
   },
   description: {
     marginLeft: 30,
-    marginTop: 40,
+    marginTop: 15,
     fontSize: 18,
     fontWeight: '700',
     color: '#24344C',
@@ -116,6 +199,7 @@ const styles = StyleSheet.create({
   highestBid: {
     marginRight: 25,
     alignItems: 'center',
+    paddingTop: 10,
   },
   highestBidValue: {
     color: '#24344C',
@@ -128,8 +212,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    marginBottom: 10,
-    padding: 40,
+    marginTop: 20,
+    paddingHorizontal: 30,
   },
   button: {
     elevation: 8,
@@ -142,5 +226,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     padding: 3,
+  },
+  textInputCurrency: {
+    marginTop: 10,
+    width: '100%',
+    height: windowHeight / 20,
+    borderColor: '#ccc',
+    borderRadius: 15,
+    borderWidth: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingLeft: 15,
+  },
+  bidInput: {
+    paddingHorizontal: 20,
   },
 })

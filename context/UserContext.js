@@ -33,6 +33,7 @@ export function UserContextProvider({ children }) {
             phoneNumber: '',
             address: '',
             mercadoPagoUserId: '',
+            cardTokens: '',
           })
           .then(() => {
             setCurrentUser(authUser)
@@ -124,8 +125,8 @@ export function UserContextProvider({ children }) {
       address: address || currentUser?.address,
       photoURL: url || currentUser?.photoURL,
       updateDate: firebase.firestore.FieldValue.serverTimestamp(),
-      mercadoPagoUserId: mercadoPagoUserId || null,
-      cardTokens: token || null,
+      mercadoPagoUserId: mercadoPagoUserId || currentUser?.mercadoPagoUserId,
+      cardTokens: token || currentUser?.cardTokens,
     })
   }
 
@@ -143,6 +144,7 @@ export function UserContextProvider({ children }) {
               photoURL,
               userId,
               mercadoPagoUserId,
+              cardTokens,
             } = doc.data()
             const user = {
               displayName,
@@ -152,6 +154,7 @@ export function UserContextProvider({ children }) {
               photoURL,
               userId,
               mercadoPagoUserId,
+              cardTokens,
             }
             setCurrentUser(user)
           })

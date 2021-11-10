@@ -19,7 +19,6 @@ const EditProfile = ({ navigation }) => {
   const [error, setError] = useState('')
   const [url, setUrl] = useState('')
 
-  console.log('Name:', name)
   const onClickUpdateProfile = async () => {
     try {
       await updateProfile({ name, phone, address, url })
@@ -83,7 +82,7 @@ const EditProfile = ({ navigation }) => {
                 })
             })
             .catch((error) => {
-              console.log(error)
+              console.log('Este es:', error)
             })
         }
       }

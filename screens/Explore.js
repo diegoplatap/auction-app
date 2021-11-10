@@ -11,6 +11,7 @@ import axios from '../utils/axios'
 
 const Explore = ({ navigation }) => {
   const { products } = useContext(ProductsContext)
+  console.log('🚀 ~ file: Explore.js ~ line 14 ~ Explore ~ products', products[2].endDate.toDate())
 
   const [categories, setCategories] = useState([
     { id: '1', name: 'Technology' },

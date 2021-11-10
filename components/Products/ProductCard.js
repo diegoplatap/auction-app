@@ -41,9 +41,7 @@ const ProductCard = (props) => {
                 style={styles.button}
               >
                 <TouchableOpacity>
-                  <Text style={styles.buttonText}>
-                    {bidded < 10 && bidded > 0 ? `0${bidded} Bidded` : `${bidded} Bidded`}
-                  </Text>
+                  <Text style={styles.buttonText}>{`${bidded} Bidded`}</Text>
                 </TouchableOpacity>
               </LinearGradient>
             </View>

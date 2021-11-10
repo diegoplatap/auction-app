@@ -67,6 +67,7 @@ export function ProductsContextContextProvider({ children }) {
             userName,
             photoURL,
             userPhotoURL,
+            userId,
             id: doc.id,
           })
         })
@@ -75,6 +76,24 @@ export function ProductsContextContextProvider({ children }) {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const updateProductForBid = async ({
+    bidded,
+    highestBid,
+    highBidUserId,
+    highBidMercadoPagoUserId,
+    highBidUserToken,
+  }) => {
+    const userRef = await db.collection('products').doc(products?.userId)
+
+    return userRef.update({
+      bidded: bidded,
+      highestBid: highestBid,
+      highBidUserId: highBidUserId,
+      highBidMercadoPagoUserId: highBidMercadoPagoUserId,
+      highBidUserToken: highBidUserToken,
+    })
   }
 
   useEffect(() => {
@@ -86,6 +105,7 @@ export function ProductsContextContextProvider({ children }) {
     setProducts,
     products,
     addProduct,
+    updateProductForBid,
   }
 
   return <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>
