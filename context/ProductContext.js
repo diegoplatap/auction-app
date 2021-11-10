@@ -54,6 +54,9 @@ export function ProductsContextContextProvider({ children }) {
             photoURL,
             userPhotoURL,
             userId,
+            highBidMercadoPagoUserId,
+            highBidUserId,
+            highBidUserToken,
           } = doc.data()
 
           products.push({
@@ -68,6 +71,9 @@ export function ProductsContextContextProvider({ children }) {
             photoURL,
             userPhotoURL,
             userId,
+            highBidMercadoPagoUserId,
+            highBidUserId,
+            highBidUserToken,
             id: doc.id,
           })
         })

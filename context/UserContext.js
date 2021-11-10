@@ -36,7 +36,19 @@ export function UserContextProvider({ children }) {
             cardTokens: '',
           })
           .then(() => {
-            setCurrentUser(authUser)
+            setCurrentUser({
+              userId: authUser.uid,
+              displayName: name,
+              email: email,
+              createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+              photoURL:
+                url ||
+                'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+              phoneNumber: '',
+              address: '',
+              mercadoPagoUserId: '',
+              cardTokens: '',
+            })
             console.log('Document successfully written!')
           })
       }
