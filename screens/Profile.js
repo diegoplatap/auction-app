@@ -99,11 +99,11 @@ const Profile = ({ navigation }) => {
           ]}
         >
           <Text>5</Text>
-          <Text>Auctions</Text>
+          <Text>My Auctions</Text>
         </View>
         <View style={styles.infoBox}>
           <Text>12</Text>
-          <Text>Orders</Text>
+          <Text>Auctions I'm in </Text>
         </View>
       </View>
       <View style={styles.menuContainer}>

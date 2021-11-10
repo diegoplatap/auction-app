@@ -50,16 +50,12 @@ const Product = ({ route, navigation }) => {
         setTimeout(() => {
           navigation.navigate('Login')
         }, 2000)
-        Alert.alert('Please login')
-      } else if (currentUser.mercadoPagoUserId === null || currentUser.mercadoPagoUserId === '') {
-        setTimeout(() => {
-          navigation.navigate('Wallet')
-        }, 2000)
-        Alert.alert('Please add a credit card')
+      } else if (currentUser.mercadoPagoUserId === '') {
+        navigation.navigate('Wallet')
       } else if (value === null) {
         Alert.alert('Please provide a value')
       } else if (value <= highestBidToNumber) {
-        Alert.alert('The bid needs to be higher than current highest bid')
+        Alert.alert('The bid needs to be higher than highest bid')
       } else {
         await updateProductForBid({
           bidded,
@@ -69,8 +65,8 @@ const Product = ({ route, navigation }) => {
           highBidUserToken,
         })
         Alert.alert(`Awesome! Hope you get ${product.title}`)
+        navigation.navigate('Home')
       }
-      navigation.navigate('Home')
     } catch (error) {
       console.log('Este es el error:', error)
     }
@@ -125,7 +121,6 @@ const Product = ({ route, navigation }) => {
               value: formattedValue,
             }))
             SetHighestBid(formattedValue)
-            // console.log(formattedValue) // $2,310.46
           }}
         />
       </View>

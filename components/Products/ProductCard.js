@@ -7,6 +7,8 @@ import Counter from './Counter'
 const ProductCard = (props) => {
   const { photoURL, title, bidded, highestBid, userName, userPhotoURL, endDate } = props
 
+  const isAvailable = endDate.toDate()
+
   const goToProduct = () => {
     const { navigation, ...product } = props
     navigation.navigate('Product', {

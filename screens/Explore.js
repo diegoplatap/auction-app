@@ -11,7 +11,6 @@ import axios from '../utils/axios'
 
 const Explore = ({ navigation }) => {
   const { products } = useContext(ProductsContext)
-  console.log('🚀 ~ file: Explore.js ~ line 14 ~ Explore ~ products', products[2].endDate.toDate())
 
   const [categories, setCategories] = useState([
     { id: '1', name: 'Technology' },
@@ -19,12 +18,6 @@ const Explore = ({ navigation }) => {
     { id: '3', name: 'Art' },
     { id: '4', name: "NFT'S" },
   ])
-
-  useEffect(() => {
-    axios.get('/v1/payment_methods').then((response) => {
-      // console.log(response.data)
-    })
-  })
 
   return (
     <View style={styles.container}>

@@ -12,7 +12,6 @@ const AddPaymentMethods = ({ navigation }) => {
   const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
 
   const { displayName, email, mercadoPagoUserId } = currentUser
-  const [error, setError] = useState('')
   const [card, setCard] = useState({
     cardNumber: '',
     email: email,
@@ -23,11 +22,6 @@ const AddPaymentMethods = ({ navigation }) => {
     expirationMonth: '',
     securityCode: '',
   })
-
-  // const [userData, setUserData] = useState({
-  //   email: 'probando01@a.com',
-  //   first_name: displayName,
-  // })
 
   const handleInputChange = (form) => {
     const { values } = form
@@ -50,8 +44,6 @@ const AddPaymentMethods = ({ navigation }) => {
       let user
       let mercadoPagoUserId
       user = await axios.get(`/v1/customers/search?email=${email}`)
-      console.log('🚀 ~ file: AddPaymentMethods.js ~ line 53 ~ createUserMercadoPago ~ user', user)
-
       if (user.data.results.length === 1) {
         mercadoPagoUserId = user.data.results[0].id
         console.log('test1')

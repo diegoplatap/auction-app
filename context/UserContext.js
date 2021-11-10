@@ -78,8 +78,26 @@ export function UserContextProvider({ children }) {
               .collection('users')
               .doc(authUser.uid)
               .onSnapshot((doc) => {
-                const { displayName, email, phoneNumber, address, photoURL, userId } = doc.data()
-                const user = { displayName, email, phoneNumber, address, photoURL, userId }
+                const {
+                  displayName,
+                  email,
+                  phoneNumber,
+                  address,
+                  photoURL,
+                  userId,
+                  mercadoPagoUserId,
+                  cardTokens,
+                } = doc.data()
+                const user = {
+                  displayName,
+                  email,
+                  phoneNumber,
+                  address,
+                  photoURL,
+                  userId,
+                  mercadoPagoUserId,
+                  cardTokens,
+                }
                 setCurrentUser(user)
               })
 
@@ -97,6 +115,8 @@ export function UserContextProvider({ children }) {
                 photoURL: additionalUserInfo.profile.picture.data.url,
                 phoneNumber: '',
                 address: '',
+                mercadoPagoUserId: '',
+                cardTokens: '',
               })
               .then(() => {
                 setCurrentUser(authUser)
