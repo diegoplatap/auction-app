@@ -20,7 +20,7 @@ const Signup = ({ navigation }) => {
   const [error, setError] = useState('')
   const [url, setUrl] = useState('')
 
-  const { register, facebookLogIn } = useContext(UserContext)
+  const { register, facebookRegister } = useContext(UserContext)
 
   const onClickRegister = async () => {
     try {
@@ -178,7 +178,7 @@ const Signup = ({ navigation }) => {
               buttonTitle="Sign Up with Facebook"
               color="white"
               backgroundColor="#1877F2"
-              onPress={() => facebookLogIn()}
+              onPress={() => facebookRegister()}
             />
             <GoogleButton
               buttonTitle="Sign Up with Google"

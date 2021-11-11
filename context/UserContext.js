@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import firebase from 'firebase'
 import { auth, db, storage } from '../config/firebase'
 import * as Facebook from 'expo-facebook'
+import { Alert } from 'react-native'
 
 const UserContext = React.createContext()
 
@@ -66,7 +67,7 @@ export function UserContextProvider({ children }) {
     })
   }
 
-  const facebookLogIn = async () => {
+  const facebookRegister = async () => {
     try {
       await Facebook.initializeAsync({
         appId: '870849203622017',
@@ -84,51 +85,22 @@ export function UserContextProvider({ children }) {
         const { additionalUserInfo } = facebookProfileData
 
         await auth.onAuthStateChanged((authUser) => {
-          if (authUser && firebase.firestore().collection('users').doc(authUser.uid)) {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(authUser.uid)
-              .onSnapshot((doc) => {
-                const {
-                  displayName,
-                  email,
-                  phoneNumber,
-                  address,
-                  photoURL,
-                  userId,
-                  mercadoPagoUserId,
-                  cardTokens,
-                } = doc.data()
-                const user = {
-                  displayName,
-                  email,
-                  phoneNumber,
-                  address,
-                  photoURL,
-                  userId,
-                  mercadoPagoUserId,
-                  cardTokens,
-                }
-                setCurrentUser(user)
-              })
-
-            return
-          } else {
+          const user = firebase.firestore().collection('users').doc(authUser.uid)
+          if (authUser && user === undefined) {
             firebase
               .firestore()
               .collection('users')
               .doc(authUser.uid)
               .set({
                 userId: authUser.uid,
-                displayName: additionalUserInfo.profile.name,
+                displayName: currentUser?.displayName || additionalUserInfo.profile.name,
                 email: additionalUserInfo.profile.email,
                 createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-                photoURL: additionalUserInfo.profile.picture.data.url,
-                phoneNumber: '',
-                address: '',
-                mercadoPagoUserId: '',
-                cardTokens: '',
+                photoURL: currentUser?.photoURL || additionalUserInfo.profile.picture.data.url,
+                phoneNumber: currentUser?.photoURL || '',
+                address: currentUser?.address || '',
+                mercadoPagoUserId: currentUser?.mercadoPagoUserId || '',
+                cardTokens: currentUser?.cardTokens || '',
               })
               .then(() => {
                 setCurrentUser(authUser)
@@ -136,12 +108,32 @@ export function UserContextProvider({ children }) {
               })
           }
         })
-
         return Promise.resolve({ type: 'success' })
-        // checkLoginState(await response)
       } else {
-        // type === 'cancel'
-        return Promise.reject({ type: 'cancel' })
+        Promise.reject({ type: 'cancel' })
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`)
+    }
+  }
+
+  const facebookLogIn = async () => {
+    try {
+      await Facebook.initializeAsync({
+        appId: '870849203622017',
+      })
+      const { type, token, expirationDate, permissions, declinedPermissions } =
+        await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile', 'email'],
+        })
+      if (type === 'success') {
+        await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+        await firebase.auth().signInWithCredential(credential)
+        return Promise.resolve({ type: 'success' })
+      } else {
+        Promise.reject({ type: 'cancel' })
+        Alert.alert('Please Sign up first')
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`)
@@ -202,6 +194,7 @@ export function UserContextProvider({ children }) {
     login,
     signOutUser,
     facebookLogIn,
+    facebookRegister,
     updateProfile,
   }
 

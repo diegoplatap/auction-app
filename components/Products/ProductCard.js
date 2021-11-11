@@ -61,30 +61,26 @@ const ProductCard = (props) => {
     })
   }
 
-  const payment = async () => {
-    try {
-      const result = await axios.post('/v1/payments', payload)
-      console.log('🚀 ~ file: ProductCard.js ~ line 66 ~ payment ~ result', result)
-
-      console.log('PERFECTOOOOO', 'GANO LA SUBASTA!!!!')
-    } catch (error) {
-      console.log('Esta entrando por aca', error)
-    }
-  }
-
-  const today = new Date()
-
-  useEffect(() => {
-    let today
-    const pay = setInterval(() => {
-      today = new Date()
-      if (endDate.toDate() < today && highBidMercadoPagoUserId !== undefined) {
-        console.log(payload)
-        payment()
-      }
-    }, 5000)
-    return () => clearInterval(pay)
-  }, [today])
+  // const payment = async () => {
+  //   try {
+  //     await axios.post('/v1/payments', payload)
+  //     console.log('PERFECTOOOOO', 'GANO LA SUBASTA!!!!')
+  //   } catch (error) {
+  //     console.log('Esta entrando por aca', error)
+  //   }
+  // }
+  // const today = new Date()
+  // useEffect(() => {
+  //   let today
+  //   const pay = setInterval(() => {
+  //     today = new Date()
+  //     if (endDate.toDate() < today && highBidMercadoPagoUserId !== undefined) {
+  //       payment()
+  //       console.log(payload)
+  //     }
+  //   }, 5000)
+  //   return () => clearInterval(pay)
+  // }, [today])
 
   return (
     <TouchableOpacity
