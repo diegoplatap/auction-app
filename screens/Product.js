@@ -21,10 +21,10 @@ const Product = ({ route, navigation }) => {
   const { endDate } = product
 
   const highestBidToNumber = product.highestBid.slice(1).replace(/\./g, '')
-  const highBidUserId = currentUser.userId
-  const highBidMercadoPagoUserId = currentUser.mercadoPagoUserId
-  const highBidUserToken = currentUser.cardTokens
-  const bidded = parseInt(product.bidded) + 1
+  const highBidUserId = currentUser?.userId
+  const highBidMercadoPagoUserId = currentUser?.mercadoPagoUserId
+  const highBidUserToken = currentUser?.cardTokens
+  const bidded = parseInt(product?.bidded) + 1
 
   const updateProductForBid = async ({
     bidded,
@@ -50,7 +50,7 @@ const Product = ({ route, navigation }) => {
         setTimeout(() => {
           navigation.navigate('Login')
         }, 2000)
-      } else if (currentUser.mercadoPagoUserId === '') {
+      } else if (currentUser.mercadoPagoUserId === undefined) {
         navigation.navigate('Wallet')
       } else if (value === null) {
         Alert.alert('Please provide a value')
