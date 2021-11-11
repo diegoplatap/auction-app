@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
   },
   timerProducts: {
     color: '#24344C',
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '700',
     textAlign: 'center',
   },
