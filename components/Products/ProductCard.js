@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ImageBackground, TouchableOpacity, Image } from
 import { LinearGradient } from 'expo-linear-gradient'
 import { Avatar } from 'react-native-elements'
 import Counter from './Counter'
-import axios from '../../utils/axios'
 
 const ProductCard = (props) => {
   const {
@@ -18,39 +17,8 @@ const ProductCard = (props) => {
     highBidMercadoPagoUserId,
     highBidUserId,
     highBidUserToken,
+    finished,
   } = props
-
-  const highestBidToNumber = highestBid.slice(1).replace(/\./g, '')
-  const highestBidToRealNumber = parseInt(highestBidToNumber)
-
-  const [payload, setPayload] = useState({
-    additional_info: {
-      items: [
-        {
-          id: id,
-          title: 'Point Mini',
-          quantity: 1,
-          unit_price: highestBidToRealNumber,
-        },
-      ],
-      payer: {
-        first_name: 'Test',
-      },
-    },
-    description: 'Payment for product',
-    installments: 1,
-    order: {
-      type: 'mercadopago',
-      id: 1,
-    },
-    payer: {
-      entity_type: 'individual',
-      type: 'customer',
-      id: highBidMercadoPagoUserId,
-    },
-    transaction_amount: highestBidToRealNumber,
-    token: highBidUserToken,
-  })
 
   const actualDate = new Date()
 
@@ -61,36 +29,30 @@ const ProductCard = (props) => {
     })
   }
 
-  // const payment = async () => {
-  //   try {
-  //     await axios.post('/v1/payments', payload)
-  //     console.log('PERFECTOOOOO', 'GANO LA SUBASTA!!!!')
-  //   } catch (error) {
-  //     console.log('Esta entrando por aca', error)
-  //   }
-  // }
-  // const today = new Date()
-  // useEffect(() => {
-  //   let today
-  //   const pay = setInterval(() => {
-  //     today = new Date()
-  //     if (endDate.toDate() < today && highBidMercadoPagoUserId !== undefined) {
-  //       payment()
-  //       console.log(payload)
-  //     }
-  //   }, 5000)
-  //   return () => clearInterval(pay)
-  // }, [today])
-
   return (
     <TouchableOpacity
       style={styles.card}
       onPress={goToProduct}
       disabled={endDate.toDate() > actualDate ? false : true}
     >
+      {endDate.toDate() > actualDate ? null : (
+        <TouchableOpacity style={styles.imageFinished} disabled={true}>
+          <Text
+            style={{
+              color: 'whitesmoke',
+              fontSize: 16,
+              top: 40,
+              left: 50,
+            }}
+          >
+            Auction ended
+          </Text>
+        </TouchableOpacity>
+      )}
       <View>
         <View style={styles.column}>
           <Image source={{ uri: photoURL }} style={styles.image}></Image>
+
           <Text style={styles.productTitle}>{title}</Text>
           <View style={styles.creator}>
             <View style={styles.creatorContainer}>
@@ -120,7 +82,15 @@ const ProductCard = (props) => {
           </View>
           <View style={styles.footerCard}>
             <View style={styles.footerCardLeft}>
-              <Counter endDate={endDate} />
+              <Counter
+                id={id}
+                endDate={endDate}
+                highBidMercadoPagoUserId={highBidMercadoPagoUserId}
+                finished={finished}
+                highestBid={highestBid}
+                highBidUserToken={highBidUserToken}
+                title={title}
+              />
               <Text style={styles.footerTitles}>Auction Ending in</Text>
             </View>
             <View style={styles.footerCardRight}>
@@ -162,6 +132,17 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 20,
     marginTop: 5,
+  },
+  imageFinished: {
+    height: 100,
+    width: 200,
+    backgroundColor: 'rgba(52, 52, 52, 0.72)',
+    top: 135,
+    right: 20,
+    borderRadius: 20,
+    marginTop: 5,
+    position: 'absolute',
+    zIndex: 10,
   },
   creator: {
     flexDirection: 'row',

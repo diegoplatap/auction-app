@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import intervalToDuration from 'date-fns/intervalToDuration'
-import { endOfDay } from 'date-fns'
+import axios from '../../utils/axios'
+import { db } from '../../config/firebase'
 
-const Counter = ({ endDate, screen }) => {
+const Counter = ({
+  id,
+  endDate,
+  screen,
+  highBidMercadoPagoUserId,
+  finished,
+  highestBid,
+  highBidUserToken,
+  title,
+}) => {
   const [counter, setCounter] = useState({
     months: '',
     days: '',
@@ -11,6 +21,26 @@ const Counter = ({ endDate, screen }) => {
     minutes: '',
     seconds: '',
   })
+
+  const highestBidToNumber = highestBid?.slice(1).replace(/\./g, '')
+  const highestBidToRealNumber = parseInt(highestBidToNumber)
+
+  // const [payloadProduct, setPayloadProduct] = useState()
+
+  const updateProductForBid = async (finished) => {
+    const userRef = await db.collection('products').doc(id)
+
+    return userRef.update({ finished: finished })
+  }
+
+  const payment = async (payload) => {
+    try {
+      await axios.post('/v1/payments', payload)
+      console.log('PERFECTOOOOO', 'GANO LA SUBASTA!!!!')
+    } catch (error) {
+      console.log('Esta entrando por aca', error)
+    }
+  }
 
   useEffect(() => {
     const today = new Date()
@@ -28,8 +58,45 @@ const Counter = ({ endDate, screen }) => {
         setCounter({ months, days, hours, minutes, seconds })
       }, 1000)
       return () => clearInterval(timer)
+    } else if (
+      endDate.toDate() < today &&
+      highBidMercadoPagoUserId !== undefined &&
+      finished === false
+    ) {
+      // console.log(payloadProduct)
+      const succesfullPayment = payment({
+        additional_info: {
+          items: [
+            {
+              id: id,
+              title: title,
+              quantity: 1,
+              unit_price: highestBidToRealNumber,
+            },
+          ],
+          payer: {
+            first_name: 'Test',
+          },
+        },
+        description: 'Payment for product',
+        installments: 1,
+        order: {
+          type: 'mercadopago',
+          id: 1,
+        },
+        payer: {
+          entity_type: 'individual',
+          type: 'customer',
+          id: highBidMercadoPagoUserId,
+        },
+        transaction_amount: highestBidToRealNumber,
+        token: highBidUserToken,
+      })
+      if (succesfullPayment !== undefined) {
+        updateProductForBid(true)
+      }
     }
-  })
+  }, [counter.seconds])
 
   return (
     <Text style={screen === 'products' ? styles.timerProducts : styles.timer}>

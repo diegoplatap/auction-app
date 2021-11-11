@@ -57,6 +57,7 @@ export function ProductsContextContextProvider({ children }) {
             highBidMercadoPagoUserId,
             highBidUserId,
             highBidUserToken,
+            finished,
           } = doc.data()
 
           products.push({
@@ -74,10 +75,12 @@ export function ProductsContextContextProvider({ children }) {
             highBidMercadoPagoUserId,
             highBidUserId,
             highBidUserToken,
+            finished,
             id: doc.id,
           })
         })
         setProducts(() => products)
+        console.log('Se cargaron los productos!')
       })
     } catch (error) {
       console.log(error)

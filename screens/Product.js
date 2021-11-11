@@ -20,7 +20,7 @@ const Product = ({ route, navigation }) => {
   const [bid, SetBid] = useState({ value: '' })
   const { endDate } = product
 
-  const highestBidToNumber = product.highestBid.slice(1).replace(/\./g, '')
+  const highestBidToNumber = product?.highestBid.slice(1).replace(/\./g, '')
   const highBidUserId = currentUser?.userId
   const highBidMercadoPagoUserId = currentUser?.mercadoPagoUserId
   const highBidUserToken = currentUser?.cardTokens
