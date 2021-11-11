@@ -33,16 +33,16 @@ const ProductCard = (props) => {
     <TouchableOpacity
       style={styles.card}
       onPress={goToProduct}
-      disabled={endDate.toDate() > actualDate ? false : true}
+      disabled={finished === false ? false : true}
     >
-      {endDate.toDate() > actualDate ? null : (
+      {finished === false ? null : (
         <TouchableOpacity style={styles.imageFinished} disabled={true}>
           <Text
             style={{
-              color: 'whitesmoke',
+              color: 'white',
               fontSize: 16,
               top: 40,
-              left: 50,
+              left: 32,
             }}
           >
             Auction ended
@@ -135,10 +135,10 @@ const styles = StyleSheet.create({
   },
   imageFinished: {
     height: 100,
-    width: 200,
-    backgroundColor: 'rgba(52, 52, 52, 0.72)',
+    width: 160,
+    backgroundColor: 'rgba(52, 52, 52, 0.6)',
     top: 135,
-    right: 20,
+    right: 37,
     borderRadius: 20,
     marginTop: 5,
     position: 'absolute',

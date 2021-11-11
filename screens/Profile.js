@@ -102,8 +102,8 @@ const Profile = ({ navigation }) => {
           <Text>My Auctions</Text>
         </View>
         <View style={styles.infoBox}>
-          <Text>12</Text>
-          <Text>Auctions I'm in </Text>
+          <Text>{/*currentUser.auctionsWon*/}14</Text>
+          <Text>Auctions I won</Text>
         </View>
       </View>
       <View style={styles.menuContainer}>

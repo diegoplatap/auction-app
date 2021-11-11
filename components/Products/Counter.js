@@ -58,13 +58,8 @@ const Counter = ({
         setCounter({ months, days, hours, minutes, seconds })
       }, 1000)
       return () => clearInterval(timer)
-    } else if (
-      endDate.toDate() < today &&
-      highBidMercadoPagoUserId !== undefined &&
-      finished === false
-    ) {
-      // console.log(payloadProduct)
-      const succesfullPayment = payment({
+    } else if (endDate.toDate() < today && finished === false) {
+      payment({
         additional_info: {
           items: [
             {
@@ -92,9 +87,7 @@ const Counter = ({
         transaction_amount: highestBidToRealNumber,
         token: highBidUserToken,
       })
-      if (succesfullPayment !== undefined) {
-        updateProductForBid(true)
-      }
+      updateProductForBid(true)
     }
   }, [counter.seconds])
 
