@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import CustomHeader from '../components/CustomHeader'
-
+import UserContext from '../context/UserContext'
 const Bookmarks = ({ navigation }) => {
+  const { currentUser } = useContext(UserContext)
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigation.navigate('Login')
+    }
+  }, [])
+
   return (
     <View style={styles.container}>
       <CustomHeader navigation={navigation} title={'Bookmarks'} />
       <View style={styles.content}>
         <Text>Bookmarks will appear here</Text>
-        <Button
-          title="Bookmarks"
-          onPress={() => navigation.navigate('Product')}
-          overlayContainerStyle={{ backgroundColor: 'white' }}
-        />
       </View>
     </View>
   )

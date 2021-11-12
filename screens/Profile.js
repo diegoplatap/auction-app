@@ -98,11 +98,11 @@ const Profile = ({ navigation }) => {
             },
           ]}
         >
-          <Text>5</Text>
+          <Text>0</Text>
           <Text>My Auctions</Text>
         </View>
         <View style={styles.infoBox}>
-          <Text>{/*currentUser.auctionsWon*/}14</Text>
+          <Text>{/*currentUser.auctionsWon*/}0</Text>
           <Text>Auctions I won</Text>
         </View>
       </View>
@@ -123,12 +123,6 @@ const Profile = ({ navigation }) => {
           <View style={styles.menuItem}>
             <Icon name="share-outline" color="#2a7abf" size={25} />
             <Text style={styles.menuItemText}>Tell Your Friends</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <View style={styles.menuItem}>
-            <MaterialIcons name="settings" size={25} color="#2a7abf" />
-            <Text style={styles.menuItemText}>Settings</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => signOutUser(navigation)}>

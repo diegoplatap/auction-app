@@ -1,13 +1,57 @@
 import React, { useState, useContext, useEffect } from 'react'
 import firebase from 'firebase'
+import Constants from 'expo-constants'
+import * as Notifications from 'expo-notifications'
 import { auth, db, storage } from '../config/firebase'
 import * as Facebook from 'expo-facebook'
 import { Alert } from 'react-native'
 
 const UserContext = React.createContext()
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
+
 export function UserContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
+
+  async function registerForPushNotificationsAsync(authUser) {
+    let token
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status
+      }
+      if (finalStatus !== 'granted') {
+        Alert.alert('Failed to get push token for push notification!')
+        return
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data
+    } else {
+      alert('Must use physical device for Push Notifications')
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      })
+    }
+
+    firebase.database().ref('users/').child(authUser.uid).set({
+      expoPushToken: token,
+    })
+
+    return token
+  }
 
   const register = async (name, email, password, url) => {
     await auth.createUserWithEmailAndPassword(email, password).then(async (authUser) => {
@@ -52,6 +96,7 @@ export function UserContextProvider({ children }) {
             })
             console.log('Document successfully written!')
           })
+        registerForPushNotificationsAsync(authUser)
       }
     })
   }

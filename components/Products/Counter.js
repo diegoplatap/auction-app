@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import intervalToDuration from 'date-fns/intervalToDuration'
 import axios from '../../utils/axios'
 import { db } from '../../config/firebase'
+import sendPushNotification from '../../utils/pushNotification'
+import UserContext from '../../context/UserContext'
+import firebase from 'firebase'
 
 const Counter = ({
   id,
@@ -22,10 +25,12 @@ const Counter = ({
     seconds: '',
   })
 
+  const [expoToken, setExpoToken] = useState('')
+
+  const { currentUser, getExpoNotificationToken } = useContext(UserContext)
+
   const highestBidToNumber = highestBid?.slice(1).replace(/\./g, '')
   const highestBidToRealNumber = parseInt(highestBidToNumber)
-
-  // const [payloadProduct, setPayloadProduct] = useState()
 
   const updateProductForBid = async (finished) => {
     const userRef = await db.collection('products').doc(id)
@@ -41,6 +46,27 @@ const Counter = ({
       console.log('Esta entrando por aca', error)
     }
   }
+
+  useEffect(() => {
+    async function getExpoNotificationToken(currentUserId) {
+      const token = await firebase
+        .database()
+        .ref()
+        .child('users')
+        .child(currentUserId)
+        .get()
+        .then((token) => {
+          const { expoPushToken } = token.val()
+          return expoPushToken
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+
+      setExpoToken(() => token)
+    }
+    getExpoNotificationToken(currentUser?.userId)
+  }, [])
 
   useEffect(() => {
     const today = new Date()
@@ -88,6 +114,7 @@ const Counter = ({
         token: highBidUserToken,
       })
       updateProductForBid(true)
+      sendPushNotification(expoToken)
     }
   }, [counter.seconds])
 

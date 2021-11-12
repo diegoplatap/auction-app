@@ -7,7 +7,6 @@ import SearchBar from '../components/Search/SearchBar'
 import { db } from '../config/firebase'
 import LottieView from 'lottie-react-native'
 import ProductsContext from '../context/ProductContext'
-import axios from '../utils/axios'
 
 const Explore = ({ navigation }) => {
   const { products } = useContext(ProductsContext)

@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -43,6 +43,12 @@ const AddProduct = ({ route, navigation }) => {
   })
   const [value, setValue] = useState(null)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!currentUser) {
+      navigation.navigate('Login')
+    }
+  }, [])
 
   const showDatePicker = () => {
     setDatePickerVisibility(true)
@@ -171,15 +177,7 @@ const AddProduct = ({ route, navigation }) => {
       <CustomHeader navigation={navigation} title={'Add product'} />
       <View style={{ alignItems: 'center', marginTop: 10 }}>
         <TouchableOpacity onPress={pickImage}>
-          <View
-          // style={{
-          //   height: 130,
-          //   width: 130,
-          //   borderRadius: 50,
-          //   justifyContent: 'center',
-          //   alignItems: 'center',
-          // }}
-          >
+          <View>
             <ImageBackground
               source={{
                 uri: product.photoURL || null,

@@ -35,20 +35,6 @@ const ProductCard = (props) => {
       onPress={goToProduct}
       disabled={finished === false ? false : true}
     >
-      {finished === false ? null : (
-        <TouchableOpacity style={styles.imageFinished} disabled={true}>
-          <Text
-            style={{
-              color: 'white',
-              fontSize: 16,
-              top: 40,
-              left: 32,
-            }}
-          >
-            Auction ended
-          </Text>
-        </TouchableOpacity>
-      )}
       <View>
         <View style={styles.column}>
           <Image source={{ uri: photoURL }} style={styles.image}></Image>
@@ -81,18 +67,36 @@ const ProductCard = (props) => {
             </View>
           </View>
           <View style={styles.footerCard}>
-            <View style={styles.footerCardLeft}>
-              <Counter
-                id={id}
-                endDate={endDate}
-                highBidMercadoPagoUserId={highBidMercadoPagoUserId}
-                finished={finished}
-                highestBid={highestBid}
-                highBidUserToken={highBidUserToken}
-                title={title}
-              />
-              <Text style={styles.footerTitles}>Auction Ending in</Text>
-            </View>
+            {finished === false ? (
+              <View style={styles.footerCardLeft}>
+                <Text style={styles.footerTitles}>Auction Ending in</Text>
+                <Counter
+                  id={id}
+                  endDate={endDate}
+                  highBidMercadoPagoUserId={highBidMercadoPagoUserId}
+                  finished={finished}
+                  highestBid={highestBid}
+                  highBidUserToken={highBidUserToken}
+                  title={title}
+                />
+              </View>
+            ) : (
+              <View style={{ bottom: 16, left: 8 }}>
+                <TouchableOpacity style={styles.imageFinished} disabled={true}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontSize: 12,
+                      top: 6,
+                      left: 10,
+                    }}
+                  >
+                    Auction ended
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
             <View style={styles.footerCardRight}>
               <Text style={styles.footerTitles}>Highest Bid</Text>
               <Text style={styles.timer}>{highestBid}</Text>
@@ -134,13 +138,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   imageFinished: {
-    height: 100,
-    width: 160,
-    backgroundColor: 'rgba(52, 52, 52, 0.6)',
-    top: 135,
-    right: 37,
+    height: 30,
+    width: 100,
+    backgroundColor: 'rgba(52, 52, 52, 0.4)',
+    top: 0,
+    // right: 7,
+    bottom: 0,
     borderRadius: 20,
-    marginTop: 5,
     position: 'absolute',
     zIndex: 10,
   },

@@ -50,7 +50,10 @@ const Product = ({ route, navigation }) => {
         setTimeout(() => {
           navigation.navigate('Login')
         }, 2000)
-      } else if (currentUser.mercadoPagoUserId === undefined) {
+      } else if (
+        currentUser?.mercadoPagoUserId === undefined ||
+        currentUser?.mercadoPagoUserId === ''
+      ) {
         navigation.navigate('Wallet')
       } else if (value === null) {
         Alert.alert('Please provide a value')
