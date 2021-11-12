@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Share } from 'react-native'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import { auth, db } from '../config/firebase'
+
 import UserContext from '../context/UserContext'
 
 const Profile = ({ navigation }) => {
