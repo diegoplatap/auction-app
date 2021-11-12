@@ -40,6 +40,7 @@ const AddProduct = ({ route, navigation }) => {
     userName: currentUser?.displayName,
     userId: currentUser?.userId,
     userPhotoURL: currentUser?.photoURL,
+    finished: false,
   })
   const [value, setValue] = useState(null)
   const [error, setError] = useState('')
@@ -79,6 +80,7 @@ const AddProduct = ({ route, navigation }) => {
       photoURL,
       userPhotoURL,
       userId,
+      finished,
     } = product
     try {
       addProduct(
@@ -92,9 +94,10 @@ const AddProduct = ({ route, navigation }) => {
         userName,
         photoURL,
         userPhotoURL,
-        userId
+        userId,
+        finished
       )
-      navigation.navigate('Landing')
+      navigation.navigate('Explore')
     } catch (error) {
       setError(error.message)
     }

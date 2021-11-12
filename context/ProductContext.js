@@ -20,7 +20,8 @@ export function ProductsContextContextProvider({ children }) {
     userName,
     photoURL,
     userPhotoURL,
-    userId
+    userId,
+    finished
   ) => {
     await db.collection('products').doc(currentUser.userId).set({
       title: title,
@@ -34,6 +35,7 @@ export function ProductsContextContextProvider({ children }) {
       photoURL: photoURL,
       userPhotoURL: userPhotoURL,
       userId: userId,
+      finished: finished,
     })
   }
 
