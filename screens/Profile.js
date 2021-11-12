@@ -109,8 +109,8 @@ const Profile = ({ navigation }) => {
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={() => {}}>
           <View style={styles.menuItem}>
-            <MaterialIcons name="favorite-outline" size={25} color="#2a7abf" />
-            <Text style={styles.menuItemText}>Your Favorites</Text>
+            <MaterialIcons name="bookmark-border" size={25} color="#2a7abf" />
+            <Text style={styles.menuItemText}>Your Bookmarks</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
