@@ -64,11 +64,11 @@ const AddPaymentMethods = ({ navigation }) => {
         console.log('test3')
         const cardTokenGenerate = await axios.post(`/v1/card_tokens`, card)
         const token = cardTokenGenerate.data.id
-        const saveCardResponse = await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {
+        await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {
           token: token,
         })
         await updateProfile({ mercadoPagoUserId, token })
-        navigation.navigate('Wallet')
+        navigation.goBack()
       }
     } catch (error) {
       console.log(error.message)

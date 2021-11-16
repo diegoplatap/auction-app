@@ -27,7 +27,7 @@ const Counter = ({
 
   const [expoToken, setExpoToken] = useState('')
 
-  const { currentUser, getExpoNotificationToken } = useContext(UserContext)
+  const { currentUser } = useContext(UserContext)
 
   const highestBidToNumber = highestBid?.slice(1).replace(/\./g, '')
   const highestBidToRealNumber = parseInt(highestBidToNumber)
@@ -48,24 +48,28 @@ const Counter = ({
   }
 
   useEffect(() => {
-    async function getExpoNotificationToken(currentUserId) {
-      const token = await firebase
-        .database()
-        .ref()
-        .child('users')
-        .child(currentUserId)
-        .get()
-        .then((token) => {
-          const { expoPushToken } = token.val()
-          return expoPushToken
-        })
-        .catch((error) => {
-          console.error(error)
-        })
+    try {
+      async function getExpoNotificationToken(currentUserId) {
+        const token = await firebase
+          .database()
+          .ref()
+          .child('users')
+          .child(currentUserId)
+          .get()
+          .then((token) => {
+            const { expoPushToken } = token.val()
+            return expoPushToken
+          })
+          .catch((error) => {
+            console.error(error)
+          })
 
-      setExpoToken(() => token)
+        setExpoToken(() => token)
+      }
+      getExpoNotificationToken(currentUser?.userId)
+    } catch (error) {
+      console.log('No hay auth user todavia')
     }
-    getExpoNotificationToken(currentUser?.userId)
   }, [])
 
   useEffect(() => {
