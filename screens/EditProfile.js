@@ -12,20 +12,17 @@ import UserContext from '../context/UserContext'
 
 const EditProfile = ({ navigation }) => {
   const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
+
   const [name, setName] = useState(currentUser?.displayName)
   const [address, setAddress] = useState(currentUser?.address)
   const [phone, setPhone] = useState(currentUser?.phoneNumber)
   const [imageUrl, setImageUrl] = useState(currentUser?.photoURL)
   const [error, setError] = useState('')
-  const [url, setUrl] = useState('')
+  const [url, setUrl] = useState()
 
   const onClickUpdateProfile = async () => {
     try {
       await updateProfile({ name, phone, address, url })
-      setCurrentUser((prevState) => ({
-        ...prevState,
-        photoURL: url,
-      }))
       navigation.goBack()
       console.log('Document successfully updated!')
     } catch (error) {

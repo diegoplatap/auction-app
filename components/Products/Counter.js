@@ -61,16 +61,18 @@ const Counter = ({
             return expoPushToken
           })
           .catch((error) => {
-            console.error(error)
+            console.log('Esta imprimiendo por aca', error)
           })
 
         setExpoToken(() => token)
       }
-      getExpoNotificationToken(currentUser?.userId)
+      if (currentUser?.userId) {
+        getExpoNotificationToken(currentUser?.userId)
+      }
     } catch (error) {
       console.log('No hay auth user todavia')
     }
-  }, [])
+  }, [currentUser?.userId])
 
   useEffect(() => {
     const today = new Date()

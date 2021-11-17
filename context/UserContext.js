@@ -130,28 +130,36 @@ export function UserContextProvider({ children }) {
         const { additionalUserInfo } = facebookProfileData
 
         await auth.onAuthStateChanged((authUser) => {
-          const user = firebase.firestore().collection('users').doc(authUser.uid)
-          if (authUser && user === undefined) {
-            firebase
-              .firestore()
-              .collection('users')
-              .doc(authUser.uid)
-              .set({
-                userId: authUser.uid,
-                displayName: currentUser?.displayName || additionalUserInfo.profile.name,
-                email: additionalUserInfo.profile.email,
-                createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-                photoURL: currentUser?.photoURL || additionalUserInfo.profile.picture.data.url,
-                phoneNumber: currentUser?.photoURL || '',
-                address: currentUser?.address || '',
-                mercadoPagoUserId: currentUser?.mercadoPagoUserId || '',
-                cardTokens: currentUser?.cardTokens || '',
-              })
-              .then(() => {
-                setCurrentUser(authUser)
-                console.log('Document successfully written!')
-              })
-          }
+          const user = firebase.firestore().collection('users').doc(authUser?.uid)
+
+          user.get().then((doc) => {
+            if (doc.exists) {
+              alert(`Please login, user already exists`)
+            } else {
+              if (authUser) {
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(authUser.uid)
+                  .set({
+                    userId: authUser.uid,
+                    displayName: currentUser?.displayName || additionalUserInfo.profile.name,
+                    email: additionalUserInfo.profile.email,
+                    createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+                    photoURL: currentUser?.photoURL || additionalUserInfo.profile.picture.data.url,
+                    phoneNumber: currentUser?.photoURL || '',
+                    address: currentUser?.address || '',
+                    mercadoPagoUserId: currentUser?.mercadoPagoUserId || '',
+                    cardTokens: currentUser?.cardTokens || '',
+                  })
+                  .then(() => {
+                    setCurrentUser(authUser)
+                    console.log('Document successfully written!')
+                  })
+                registerForPushNotificationsAsync(authUser)
+              }
+            }
+          })
         })
         return Promise.resolve({ type: 'success' })
       } else {
@@ -187,6 +195,11 @@ export function UserContextProvider({ children }) {
 
   const updateProfile = async ({ name, phone, address, url, mercadoPagoUserId, token }) => {
     const userRef = await db.collection('users').doc(currentUser?.userId)
+
+    setCurrentUser((prevState) => ({
+      ...prevState,
+      photoURL: url,
+    }))
 
     return userRef.update({
       displayName: name || currentUser?.displayName,
