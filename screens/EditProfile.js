@@ -11,7 +11,7 @@ import ProfileHeader from '../components/ProfilesHeader'
 import UserContext from '../context/UserContext'
 
 const EditProfile = ({ navigation }) => {
-  const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
+  const { currentUser, updateProfile } = useContext(UserContext)
 
   const [name, setName] = useState(currentUser?.displayName)
   const [address, setAddress] = useState(currentUser?.address)

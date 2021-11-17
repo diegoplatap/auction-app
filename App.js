@@ -19,9 +19,9 @@ export default function App() {
   let routeName
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched25').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched29').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched25', 'true')
+        AsyncStorage.setItem('alreadyLaunched29', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)

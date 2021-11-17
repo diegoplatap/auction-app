@@ -95,7 +95,7 @@ export function UserContextProvider({ children }) {
               mercadoPagoUserId: '',
               cardTokens: '',
             })
-            console.log('Document successfully written!')
+            console.log('ESTA ENTRANDO POR ACA 1  Document successfully written!')
           })
         registerForPushNotificationsAsync(authUser)
       }
@@ -155,7 +155,7 @@ export function UserContextProvider({ children }) {
                   })
                   .then(() => {
                     setCurrentUser(authUser)
-                    console.log('Document successfully written!')
+                    console.log('ESTA ENTRANDO POR ACA 2 Document successfully written!')
                   })
                 registerForPushNotificationsAsync(authUser)
               }
