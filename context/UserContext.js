@@ -5,6 +5,7 @@ import * as Notifications from 'expo-notifications'
 import { auth, db, storage } from '../config/firebase'
 import * as Facebook from 'expo-facebook'
 import { Alert } from 'react-native'
+import axios from '../utils/axios'
 
 const UserContext = React.createContext()
 
@@ -212,6 +213,39 @@ export function UserContextProvider({ children }) {
     })
   }
 
+  const createUserMercadoPago = async ({ email, displayName, card }) => {
+    try {
+      let user
+      let mercadoPagoUserId
+      user = await axios.get(`/v1/customers/search?email=${email}`)
+      if (user.data.results.length === 1) {
+        mercadoPagoUserId = user.data.results[0].id
+      }
+      if (user.data.results.length === 0) {
+        user = await axios.post('/v1/customers', {
+          email: email,
+          first_name: displayName,
+        })
+        mercadoPagoUserId = user.data.id
+        setCurrentUser((prevState) => ({
+          ...prevState,
+          mercadoPagoUserId: mercadoPagoUserId,
+        }))
+      }
+      if (user) {
+        const cardTokenGenerate = await axios.post(`/v1/card_tokens`, card)
+        const token = cardTokenGenerate.data.id
+        await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {
+          token: token,
+        })
+        await updateProfile({ mercadoPagoUserId, token })
+      }
+    } catch (error) {
+      console.log(error.message)
+      Alert.alert('Please try again later')
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -254,6 +288,7 @@ export function UserContextProvider({ children }) {
     facebookLogIn,
     facebookRegister,
     updateProfile,
+    createUserMercadoPago,
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>

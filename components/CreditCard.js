@@ -51,7 +51,7 @@ const CreditCard = (props) => {
           <Text style={styles.text}>{last_four_digits}</Text>
         </View>
         <View style={styles.footerContainer}>
-          <Text style={styles.text}>{name}</Text>
+          <Text style={styles.text}>{name.toUpperCase()}</Text>
           <Text style={styles.text}>{`${expiration_month}/${expiration_year}`}</Text>
         </View>
       </View>

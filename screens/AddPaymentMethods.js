@@ -1,17 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React, { useContext, useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native'
 import AddPaymentsHeader from '../components/AddPaymentsHeader'
 import { windowHeight } from '../utils/Dimentions'
-import axios from '../utils/axios'
 import UserContext from '../context/UserContext'
 import { CreditCardInput } from 'react-native-input-credit-card'
-import { Alert } from 'react-native'
 
 const AddPaymentMethods = ({ navigation }) => {
-  const { currentUser, updateProfile, setCurrentUser } = useContext(UserContext)
+  const { currentUser, createUserMercadoPago } = useContext(UserContext)
 
-  const { displayName, email, mercadoPagoUserId } = currentUser
+  const { displayName, email } = currentUser
   const [card, setCard] = useState({
     cardNumber: '',
     email: email,
@@ -39,40 +37,12 @@ const AddPaymentMethods = ({ navigation }) => {
     }))
   }
 
-  const createUserMercadoPago = async () => {
+  const onClickCreateUserMercadoPago = async () => {
     try {
-      let user
-      let mercadoPagoUserId
-      user = await axios.get(`/v1/customers/search?email=${email}`)
-      if (user.data.results.length === 1) {
-        mercadoPagoUserId = user.data.results[0].id
-        console.log('test1')
-      }
-      if (user.data.results.length === 0) {
-        console.log('test2')
-        user = await axios.post('/v1/customers', {
-          email: email,
-          first_name: displayName,
-        })
-        mercadoPagoUserId = user.data.id
-        setCurrentUser((prevState) => ({
-          ...prevState,
-          mercadoPagoUserId: mercadoPagoUserId,
-        }))
-      }
-      if (user) {
-        console.log('test3')
-        const cardTokenGenerate = await axios.post(`/v1/card_tokens`, card)
-        const token = cardTokenGenerate.data.id
-        await axios.post(`/v1/customers/${mercadoPagoUserId}/cards`, {
-          token: token,
-        })
-        await updateProfile({ mercadoPagoUserId, token })
-        navigation.goBack()
-      }
+      await createUserMercadoPago({ displayName, email, card })
+      navigation.goBack()
     } catch (error) {
       console.log(error.message)
-      Alert.alert('Please try again later')
     }
   }
 
@@ -88,7 +58,7 @@ const AddPaymentMethods = ({ navigation }) => {
           end={{ x: 1, y: 1 }}
           style={styles.button}
         >
-          <TouchableOpacity onPress={() => createUserMercadoPago()}>
+          <TouchableOpacity onPress={() => onClickCreateUserMercadoPago()}>
             <Text style={styles.buttonText}>{`Add Card`}</Text>
           </TouchableOpacity>
         </LinearGradient>
