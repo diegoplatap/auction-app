@@ -46,10 +46,10 @@ const Product = ({ route, navigation }) => {
 
   const placeAbid = async () => {
     try {
-      if (currentUser === undefined) {
+      if (!currentUser) {
         setTimeout(() => {
           navigation.navigate('Login')
-        }, 1000)
+        }, 100)
       } else if (
         currentUser?.mercadoPagoUserId === undefined ||
         currentUser?.mercadoPagoUserId === ''

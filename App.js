@@ -22,9 +22,9 @@ export default function App() {
   LogBox.ignoreAllLogs()
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched30').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched36').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched30', 'true')
+        AsyncStorage.setItem('alreadyLaunched36', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)

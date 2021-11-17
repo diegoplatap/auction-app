@@ -18,17 +18,13 @@ const Login = ({ navigation }) => {
 
   const { login, facebookLogIn, currentUser } = useContext(UserContext)
 
-  if (currentUser) {
-    navigation.replace('Landing')
-  }
-
-  const onClickLogin = async () => {
-    try {
-      await login(email, password)
-    } catch (error) {
-      setError('Email and password are required to log in')
-    }
-  }
+  // const onClickLogin = async () => {
+  //   try {
+  //     await login(email, password)
+  //   } catch (error) {
+  //     setError('Email and password are required to log in')
+  //   }
+  // }
 
   const signInWithGoogleAsync = async () => {
     try {
@@ -72,7 +68,11 @@ const Login = ({ navigation }) => {
         secureTextEntry={true}
       />
       <Text>{error}</Text>
-      <FormButton buttonTitle="Log in" backgroundColor="#114E85" onPress={() => onClickLogin()} />
+      <FormButton
+        buttonTitle="Log in"
+        backgroundColor="#114E85"
+        onPress={() => login({ email, password, navigation })}
+      />
 
       <TouchableOpacity
         style={styles.forgotButton}
@@ -87,7 +87,7 @@ const Login = ({ navigation }) => {
             buttonTitle="Continue with Facebook"
             color="white"
             backgroundColor="#1877F2"
-            onPress={() => facebookLogIn()}
+            onPress={() => facebookLogIn(navigation)}
           />
           <GoogleButton
             buttonTitle="Continue with Google"

@@ -102,8 +102,13 @@ export function UserContextProvider({ children }) {
     })
   }
 
-  const login = async (email, password) => {
-    await auth.signInWithEmailAndPassword(email, password)
+  const login = async ({ email, password, navigation }) => {
+    try {
+      await auth.signInWithEmailAndPassword(email, password)
+      navigation.replace('Landing')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const signOutUser = async (navigation) => {
@@ -171,7 +176,7 @@ export function UserContextProvider({ children }) {
     }
   }
 
-  const facebookLogIn = async () => {
+  const facebookLogIn = async (navigation) => {
     try {
       await Facebook.initializeAsync({
         appId: '870849203622017',
@@ -184,6 +189,7 @@ export function UserContextProvider({ children }) {
         await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         const credential = firebase.auth.FacebookAuthProvider.credential(token)
         await firebase.auth().signInWithCredential(credential)
+        navigation.replace('Landing')
         return Promise.resolve({ type: 'success' })
       } else {
         Promise.reject({ type: 'cancel' })
