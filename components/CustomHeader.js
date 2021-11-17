@@ -1,24 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import UserContext from '../context/UserContext'
-import { auth } from '../config/firebase'
 import { Avatar } from 'react-native-elements/dist/avatar/Avatar'
 
 const CustomHeader = ({ navigation, title }) => {
-  const [isUserAuth, setIsUserAuth] = useState(null)
   const { currentUser } = useContext(UserContext)
 
   const openProfile = () => navigation.navigate('Profile')
   const openLogin = () => navigation.navigate('Login')
-
-  useEffect(() => {
-    auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        setIsUserAuth(true)
-      }
-    })
-  }, [currentUser?.photoURL])
 
   return (
     <View style={styles.container}>
@@ -31,7 +21,7 @@ const CustomHeader = ({ navigation, title }) => {
                 currentUser?.photoURL ||
                 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
             }}
-            onPress={isUserAuth ? openProfile : openLogin}
+            onPress={currentUser?.photoURL ? openProfile : openLogin}
           />
         </View>
       </View>

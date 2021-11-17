@@ -18,7 +18,7 @@ Notifications.setNotificationHandler({
 })
 
 export function UserContextProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState()
+  const [currentUser, setCurrentUser] = useState(null)
 
   async function registerForPushNotificationsAsync(authUser) {
     let token
@@ -272,7 +272,7 @@ export function UserContextProvider({ children }) {
               mercadoPagoUserId,
               cardTokens,
             }
-            setCurrentUser(user)
+            setCurrentUser(() => user)
           })
       }
     })
