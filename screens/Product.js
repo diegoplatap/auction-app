@@ -49,7 +49,7 @@ const Product = ({ route, navigation }) => {
       if (currentUser === undefined) {
         setTimeout(() => {
           navigation.navigate('Login')
-        }, 2000)
+        }, 1000)
       } else if (
         currentUser?.mercadoPagoUserId === undefined ||
         currentUser?.mercadoPagoUserId === ''

@@ -11,6 +11,7 @@ import Product from './screens/Product'
 import EditProfile from './screens/EditProfile'
 import { UserContextProvider } from './context/UserContext'
 import { ProductsContextContextProvider } from './context/ProductContext'
+import { LogBox } from 'react-native'
 
 const Stack = createStackNavigator()
 
@@ -18,10 +19,12 @@ export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
   let routeName
 
+  LogBox.ignoreAllLogs()
+
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched29').then((value) => {
+    AsyncStorage.getItem('alreadyLaunched30').then((value) => {
       if (value === null) {
-        AsyncStorage.setItem('alreadyLaunched29', 'true')
+        AsyncStorage.setItem('alreadyLaunched30', 'true')
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
