@@ -17,4 +17,6 @@ var preference = {
 
 mercadopago.preferences.create(preference)
 
+console.log('test')
+
 export default mp
